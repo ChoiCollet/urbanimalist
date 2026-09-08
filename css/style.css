@@ -161,6 +161,16 @@ section .section-sub { color: var(--ink-soft); margin-bottom: 24px; font-size: 0
 
 .panel-heading { font-weight: 800; margin-bottom: 12px; color: var(--primary-dark); }
 
+#submap-box { margin-bottom: 16px; }
+.submap-wrap {
+  background: #f3f1ea; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 14px; max-height: 420px; overflow: hidden;
+}
+.submap-wrap svg { width: 100%; height: auto; display: block; }
+.submap-wrap svg path { stroke: #fff; stroke-width: 1; transition: filter 0.15s ease; }
+.submap-wrap svg path.hovered { filter: brightness(0.9); }
+.submap-note { font-size: 0.78rem; color: var(--ink-soft); margin: 8px 0 0; }
+
 .sigungu-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 .sigungu-chip {
   background: var(--bg); border: 1px solid var(--border); border-radius: 999px;
@@ -189,7 +199,9 @@ section .section-sub { color: var(--ink-soft); margin-bottom: 24px; font-size: 0
   color: var(--tag-color);
 }
 .entry-region { font-size: 0.78rem; color: var(--ink-soft); }
-.entry-del { margin-left: auto; background: none; border: none; color: #b64545; cursor: pointer; font-size: 0.78rem; font-weight: 700; }
+.entry-actions { margin-left: auto; display: flex; gap: 10px; }
+.entry-edit { background: none; border: none; color: var(--primary-dark); cursor: pointer; font-size: 0.78rem; font-weight: 700; }
+.entry-del { background: none; border: none; color: #b64545; cursor: pointer; font-size: 0.78rem; font-weight: 700; }
 .entry-card h4 { margin: 4px 0; font-size: 1rem; }
 .entry-card p { margin: 4px 0; color: var(--ink-soft); font-size: 0.9rem; }
 .entry-meta { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--ink-soft); margin-top: 8px; }
@@ -221,6 +233,10 @@ textarea { min-height: 80px; resize: vertical; }
   border-radius: 999px; font-weight: 800; cursor: pointer; margin-top: 6px;
 }
 .submit-btn:hover { background: var(--primary-dark); }
+.cancel-btn {
+  background: none; color: var(--ink-soft); border: 1px solid var(--border); padding: 12px 22px;
+  border-radius: 999px; font-weight: 700; cursor: pointer; margin-top: 6px; margin-left: 8px;
+}
 #form-status { margin-left: 12px; font-size: 0.85rem; color: var(--primary-dark); font-weight: 700; }
 
 .my-entries-header { display: flex; align-items: center; justify-content: space-between; margin: 32px 0 12px; }

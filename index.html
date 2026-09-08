@@ -176,6 +176,16 @@
 
         <div id="panel-level-2" hidden>
           <p class="panel-heading"></p>
+          <div id="submap-box" hidden>
+            <div class="submap-wrap"></div>
+            <div class="map-legend">
+              <span><i style="background:var(--map-empty)"></i>자료 없음</span>
+              <span><i style="background:var(--map-low)"></i>1~2건</span>
+              <span><i style="background:var(--map-mid)"></i>3~5건</span>
+              <span><i style="background:var(--map-high)"></i>6건 이상</span>
+            </div>
+            <p class="submap-note">지도를 클릭해도 되고, 아래 목록에서 시군구를 선택해도 됩니다.</p>
+          </div>
           <div class="sigungu-grid"></div>
           <button class="view-all-btn" type="button">이 시도 전체 자료 보기</button>
         </div>
@@ -229,7 +239,8 @@
           <input id="field-sourceUrl" name="sourceUrl" type="url" placeholder="https://" />
         </div>
       </div>
-      <button class="submit-btn" type="submit">자료 등록</button>
+      <button class="submit-btn" id="form-submit-btn" type="submit">자료 등록</button>
+      <button class="cancel-btn" id="form-cancel-btn" type="button" hidden>수정 취소</button>
       <span id="form-status"></span>
     </form>
 
