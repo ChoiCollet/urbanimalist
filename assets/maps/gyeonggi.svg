@@ -1,4 +1,20 @@
 <svg id="sido-map" viewBox="0 0 640 931" xmlns="http://www.w3.org/2000/svg">
+<style>
+path { fill: #eceae1; stroke: #ffffff; stroke-width: 1; }
+text.sgg-label {
+  fill: #22291f;
+  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  text-anchor: middle;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: #ffffff;
+  stroke-width: 2.5px;
+  stroke-linejoin: round;
+}
+text.sgg-label.small { font-size: 9px; }
+</style>
+<g class="sgg-paths">
 <path id="sgg-31380" data-name="양평군" d="M 482.67,403.67 L 491.52,401.12 L 501.38,391.21 L 512.26,395.95 L 523.39,407.00 L 542.02,418.96 L 547.02,426.57 L 566.81,423.37 L 572.09,428.43 L 583.54,427.15 L 592.23,438.42 L 608.00,444.66 L 604.96,452.37 L 589.42,454.56 L 575.42,470.30 L 575.65,478.17 L 585.01,493.60 L 587.44,508.84 L 576.89,543.72 L 569.18,546.02 L 544.08,542.30 L 547.20,522.53 L 529.54,521.73 L 520.66,525.43 L 515.63,520.74 L 501.72,517.30 L 473.16,521.92 L 467.08,509.16 L 460.67,506.40 L 448.43,515.19 L 423.93,506.56 L 414.34,516.43 L 409.58,512.58 L 402.32,496.55 L 409.03,486.17 L 405.75,471.29 L 398.61,457.30 L 382.12,455.03 L 373.98,464.70 L 374.32,452.90 L 388.81,423.63 L 393.42,404.03 L 401.61,392.92 L 413.82,391.47 L 424.89,383.42 L 433.42,393.15 L 445.79,414.85 L 446.31,431.55 L 456.50,434.50 L 465.90,426.97 L 483.76,426.21 L 487.75,411.72 L 482.67,403.67 Z"><title>양평군</title></path>
 <path id="sgg-31370" data-name="가평군" d="M 433.77,173.57 L 439.09,192.50 L 445.20,198.03 L 457.83,201.58 L 474.37,200.69 L 476.34,218.70 L 501.66,225.79 L 506.30,234.35 L 508.01,252.24 L 500.84,269.61 L 493.62,269.01 L 484.15,280.04 L 471.25,287.44 L 468.29,297.53 L 472.64,305.31 L 466.53,314.97 L 476.43,331.86 L 460.52,347.99 L 474.82,354.31 L 483.05,349.18 L 478.85,372.62 L 480.00,385.65 L 473.19,395.75 L 482.67,403.67 L 487.75,411.72 L 483.76,426.21 L 465.90,426.97 L 456.50,434.50 L 446.31,431.55 L 445.79,414.85 L 433.42,393.15 L 424.89,383.42 L 413.82,391.47 L 401.61,392.92 L 405.09,378.54 L 393.97,362.62 L 394.84,351.80 L 389.42,348.67 L 378.93,328.10 L 356.47,320.89 L 361.95,301.39 L 359.74,295.71 L 365.78,272.17 L 376.16,274.23 L 381.15,270.15 L 383.43,243.80 L 395.01,244.00 L 407.29,232.08 L 403.77,222.29 L 409.67,210.77 L 419.69,202.54 L 421.95,193.30 L 433.77,173.57 Z"><title>가평군</title></path>
 <path id="sgg-31350" data-name="연천군" d="M 288.62,42.30 L 290.65,56.88 L 288.99,69.46 L 297.70,74.68 L 305.55,69.27 L 311.58,74.88 L 313.29,92.68 L 318.87,100.78 L 316.08,124.25 L 324.42,156.41 L 322.03,166.06 L 305.65,169.91 L 302.37,161.72 L 289.92,173.59 L 304.17,192.81 L 305.20,203.03 L 293.33,212.50 L 280.64,208.23 L 281.04,216.89 L 264.67,211.73 L 253.36,232.29 L 245.80,240.78 L 229.97,232.90 L 248.06,205.52 L 238.08,199.50 L 228.33,199.52 L 214.37,211.30 L 197.56,202.89 L 196.36,217.07 L 186.17,217.05 L 179.55,208.94 L 172.53,211.71 L 171.04,220.54 L 157.11,217.26 L 155.56,205.69 L 167.92,205.09 L 165.15,194.87 L 168.91,182.96 L 178.29,184.19 L 186.47,191.23 L 195.22,173.38 L 195.42,160.83 L 184.06,157.60 L 176.85,149.63 L 153.50,156.61 L 148.70,147.42 L 132.76,131.74 L 142.13,117.06 L 166.29,93.40 L 186.65,79.85 L 196.30,89.96 L 209.41,90.47 L 220.97,86.66 L 226.37,93.63 L 234.54,85.82 L 230.81,73.86 L 237.48,72.35 L 252.64,61.24 L 271.84,53.91 L 288.62,42.30 Z"><title>연천군</title></path>
@@ -43,4 +59,51 @@
 <path id="sgg-31013" data-name="수원시 팔달구" d="M 256.11,586.23 L 260.47,596.30 L 257.29,606.21 L 232.30,589.84 L 245.44,590.42 L 256.11,586.23 Z"><title>수원시 팔달구</title></path>
 <path id="sgg-31012" data-name="수원시 권선구" d="M 226.03,581.05 L 232.30,589.84 L 257.29,606.21 L 258.59,613.30 L 251.24,623.42 L 229.74,621.35 L 219.98,606.86 L 210.83,602.32 L 210.13,594.08 L 212.53,580.87 L 226.03,581.05 Z"><title>수원시 권선구</title></path>
 <path id="sgg-31011" data-name="수원시 장안구" d="M 249.58,554.45 L 255.89,558.15 L 258.69,570.91 L 256.11,586.23 L 245.44,590.42 L 232.30,589.84 L 226.03,581.05 L 233.24,568.05 L 249.58,554.45 Z"><title>수원시 장안구</title></path>
+</g>
+<g class="sgg-labels">
+<text class="sgg-label" x="491.3" y="468.3" font-size="12.0">양평군</text>
+<text class="sgg-label" x="435.7" y="304.9" font-size="12.0">가평군</text>
+<text class="sgg-label" x="239.7" y="144.8" font-size="12.0">연천군</text>
+<text class="sgg-label" x="507.2" y="585.2" font-size="12.0">여주시</text>
+<text class="sgg-label" x="350.0" y="221.9" font-size="12.0">포천시</text>
+<text class="sgg-label" x="242.0" y="309.7" font-size="12.0">양주시</text>
+<text class="sgg-label" x="371.3" y="530.7" font-size="12.0">광주시</text>
+<text class="sgg-label" x="187.7" y="660.1" font-size="12.0">화성시</text>
+<text class="sgg-label" x="80.0" y="380.7" font-size="12.0">김포시</text>
+<text class="sgg-label" x="372.6" y="731.5" font-size="12.0">안성시</text>
+<text class="sgg-label" x="448.5" y="635.2" font-size="12.0">이천시</text>
+<text class="sgg-label" x="160.3" y="285.1" font-size="12.0">파주시</text>
+<text class="sgg-label small" x="272.3" y="567.5" font-size="9.4">용인시수지구</text>
+<text class="sgg-label small" x="294.2" y="603.3" font-size="9.4">용인시기흥구</text>
+<text class="sgg-label" x="350.5" y="631.5" font-size="12.0">용인시</text><text class="sgg-label" x="350.5" y="644.7" font-size="12.0">처인구</text>
+<text class="sgg-label small" x="330.3" y="464.6" font-size="9.4">하남시</text>
+<text class="sgg-label small" x="237.6" y="551.5" font-size="9.4">의왕시</text>
+<text class="sgg-label small" x="208.4" y="561.5" font-size="9.4">군포시</text>
+<text class="sgg-label small" x="149.7" y="537.4" font-size="9.4">시흥시</text>
+<text class="sgg-label small" x="264.1" y="660.0" font-size="9.4">오산시</text>
+<text class="sgg-label" x="346.1" y="389.1" font-size="12.0">남양주시</text>
+<text class="sgg-label small" x="297.6" y="421.8" font-size="9.4">구리시</text>
+<text class="sgg-label small" x="243.1" y="513.6" font-size="9.4">과천시</text>
+<text class="sgg-label small" x="124.4" y="379.4" font-size="9.4">고양시일산서구</text>
+<text class="sgg-label small" x="153.9" y="378.9" font-size="9.4">고양시일산동구</text>
+<text class="sgg-label" x="188.6" y="384.4" font-size="12.0">고양시</text><text class="sgg-label" x="188.6" y="397.6" font-size="12.0">덕양구</text>
+<text class="sgg-label small" x="151.1" y="574.0" font-size="9.4">안산시단원구</text>
+<text class="sgg-label small" x="186.2" y="577.7" font-size="9.4">안산시상록구</text>
+<text class="sgg-label small" x="275.7" y="250.0" font-size="9.4">동두천시</text>
+<text class="sgg-label" x="239.7" y="741.4" font-size="12.0">평택시</text>
+<text class="sgg-label small" x="182.4" y="507.7" font-size="9.4">광명시</text>
+<text class="sgg-label small" x="152.3" y="462.3" font-size="9.4">부천시오정구</text>
+<text class="sgg-label small" x="154.2" y="489.8" font-size="9.4">부천시소사구</text>
+<text class="sgg-label small" x="146.3" y="477.7" font-size="9.4">부천시원미구</text>
+<text class="sgg-label small" x="222.2" y="530.9" font-size="9.4">안양시동안구</text>
+<text class="sgg-label small" x="203.3" y="528.0" font-size="9.4">안양시만안구</text>
+<text class="sgg-label small" x="270.6" y="348.5" font-size="9.4">의정부시</text>
+<text class="sgg-label small" x="286.9" y="542.5" font-size="9.4">성남시분당구</text>
+<text class="sgg-label small" x="312.1" y="513.0" font-size="9.4">성남시중원구</text>
+<text class="sgg-label small" x="286.6" y="511.9" font-size="9.4">성남시수정구</text>
+<text class="sgg-label small" x="266.3" y="598.2" font-size="9.4">수원시영통구</text>
+<text class="sgg-label small" x="250.5" y="598.3" font-size="9.4">수원시팔달구</text>
+<text class="sgg-label small" x="232.8" y="606.7" font-size="9.4">수원시권선구</text>
+<text class="sgg-label small" x="244.3" y="578.1" font-size="9.4">수원시장안구</text>
+</g>
 </svg>

@@ -1,4 +1,20 @@
 <svg id="sido-map" viewBox="0 0 640 583" xmlns="http://www.w3.org/2000/svg">
+<style>
+path { fill: #eceae1; stroke: #ffffff; stroke-width: 1; }
+text.sgg-label {
+  fill: #22291f;
+  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  text-anchor: middle;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: #ffffff;
+  stroke-width: 2.5px;
+  stroke-linejoin: round;
+}
+text.sgg-label.small { font-size: 9px; }
+</style>
+<g class="sgg-paths">
 <path id="sgg-11250" data-name="강동구" d="M 512.22,273.30 L 584.01,239.64 L 608.00,272.23 L 581.89,300.16 L 556.06,349.38 L 520.61,329.87 L 507.33,302.88 L 512.22,273.30 Z"><title>강동구</title></path>
 <path id="sgg-11240" data-name="송파구" d="M 448.09,335.13 L 492.31,330.64 L 507.33,302.88 L 520.61,329.87 L 556.06,349.38 L 579.37,378.69 L 549.57,425.25 L 525.02,440.15 L 506.62,399.28 L 452.04,370.28 L 448.09,335.13 Z"><title>송파구</title></path>
 <path id="sgg-11230" data-name="강남구" d="M 433.64,328.08 L 448.09,335.13 L 452.04,370.28 L 506.62,399.28 L 525.02,440.15 L 488.91,446.78 L 472.19,422.10 L 429.80,433.98 L 402.42,406.21 L 371.49,330.29 L 384.08,317.53 L 433.64,328.08 Z"><title>강남구</title></path>
@@ -24,4 +40,32 @@
 <path id="sgg-11030" data-name="용산구" d="M 366.95,301.98 L 384.08,317.53 L 371.49,330.29 L 327.37,357.87 L 286.02,344.00 L 276.52,327.53 L 302.68,288.79 L 334.72,284.85 L 366.95,301.98 Z"><title>용산구</title></path>
 <path id="sgg-11020" data-name="중구" d="M 387.48,253.29 L 366.95,301.98 L 334.72,284.85 L 302.68,288.79 L 301.43,275.89 L 308.59,263.48 L 387.48,253.29 Z"><title>중구</title></path>
 <path id="sgg-11010" data-name="종로구" d="M 315.75,147.09 L 320.33,148.66 L 336.49,177.96 L 343.00,218.87 L 387.20,242.24 L 387.48,253.29 L 308.59,263.48 L 290.41,240.77 L 285.99,189.90 L 288.48,160.17 L 315.75,147.09 Z"><title>종로구</title></path>
+</g>
+<g class="sgg-labels">
+<text class="sgg-label" x="553.8" y="296.1" font-size="13.0">강동구</text>
+<text class="sgg-label" x="515.7" y="375.6" font-size="13.0">송파구</text>
+<text class="sgg-label" x="440.5" y="389.0" font-size="13.0">강남구</text>
+<text class="sgg-label" x="396.4" y="429.1" font-size="13.0">서초구</text>
+<text class="sgg-label" x="278.2" y="441.5" font-size="13.0">관악구</text>
+<text class="sgg-label" x="288.5" y="383.5" font-size="13.0">동작구</text>
+<text class="sgg-label" x="228.0" y="346.6" font-size="13.0">영등포구</text>
+<text class="sgg-label" x="215.9" y="451.6" font-size="13.0">금천구</text>
+<text class="sgg-label" x="160.5" y="390.8" font-size="13.0">구로구</text>
+<text class="sgg-label" x="113.7" y="277.3" font-size="13.0">강서구</text>
+<text class="sgg-label" x="153.7" y="337.6" font-size="13.0">양천구</text>
+<text class="sgg-label" x="229.1" y="280.2" font-size="13.0">마포구</text>
+<text class="sgg-label" x="268.3" y="248.6" font-size="13.0">서대문구</text>
+<text class="sgg-label" x="254.9" y="174.5" font-size="13.0">은평구</text>
+<text class="sgg-label" x="460.6" y="116.3" font-size="13.0">노원구</text>
+<text class="sgg-label" x="401.4" y="90.8" font-size="13.0">도봉구</text>
+<text class="sgg-label" x="367.7" y="129.8" font-size="13.0">강북구</text>
+<text class="sgg-label" x="383.4" y="197.4" font-size="13.0">성북구</text>
+<text class="sgg-label" x="484.0" y="212.4" font-size="13.0">중랑구</text>
+<text class="sgg-label" x="431.9" y="238.8" font-size="13.0">동대문구</text>
+<text class="sgg-label" x="475.8" y="299.4" font-size="13.0">광진구</text>
+<text class="sgg-label" x="410.9" y="294.1" font-size="13.0">성동구</text>
+<text class="sgg-label" x="327.0" y="324.9" font-size="13.0">용산구</text>
+<text class="sgg-label" x="345.9" y="279.1" font-size="13.0">중구</text>
+<text class="sgg-label" x="322.7" y="218.6" font-size="13.0">종로구</text>
+</g>
 </svg>
