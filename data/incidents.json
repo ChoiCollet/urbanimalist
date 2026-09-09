@@ -1,1 +1,384 @@
-[]
+[
+  {
+    "id": "seed-001",
+    "sido": [
+      "incheon"
+    ],
+    "sigungu": "연수구",
+    "cause": "etc",
+    "title": "송도서 출몰한 털 듬성듬성 빠진 동물 정체는 너구리…개선충 감염 추정",
+    "desc": "개선충 감염",
+    "source": "서울신문",
+    "sourceUrl": "https://m.seoul.co.kr/news/society/2025/04/27/20250427500044",
+    "date": "2025-04-27"
+  },
+  {
+    "id": "seed-002",
+    "sido": [
+      "incheon"
+    ],
+    "sigungu": "강화군",
+    "cause": "conflict",
+    "title": "서식지 잃고 도심으로 밀려온 야생생물…인간과 갈등 60% 증가",
+    "desc": "강화 너구리 발견(서식지 감소)\n전국, 동물로 인한 농작물 피해(2015) > 부상•사망•폐사(2024)",
+    "source": "경향신문",
+    "sourceUrl": "https://www.khan.co.kr/article/202603191539001/amp",
+    "date": "2026-03-19"
+  },
+  {
+    "id": "seed-003",
+    "sido": [
+      "south-gyeongsang",
+      "north-gyeongsang",
+      "busan",
+      "daegu",
+      "ulsan"
+    ],
+    "sigungu": "",
+    "cause": "etc",
+    "title": "대형 산불 속 '반려동물·가축' 보호할 법적 장치 없어",
+    "desc": "영남(경상남도, 경상북도, 부산광역시, 대구광역시, 울산광역시), 산불",
+    "source": "데이터솜",
+    "sourceUrl": "https://www.datasom.co.kr/news/articleViewAmp.html?idxno=204917",
+    "date": "2025-06-26"
+  },
+  {
+    "id": "seed-004",
+    "sido": [
+      "nationwide"
+    ],
+    "sigungu": "",
+    "cause": "roadkill",
+    "title": "인간 주위 맴도는 야생동물 〈1142호〉",
+    "desc": "로드킬, 도시화에 따른 서식지 파괴",
+    "source": "명대신문",
+    "sourceUrl": "http://news.mju.ac.kr/news/articleView.html?idxno=13286",
+    "date": "2025-05-19"
+  },
+  {
+    "id": "seed-005",
+    "sido": [
+      "south-gyeongsang"
+    ],
+    "sigungu": "진주시",
+    "cause": "collision",
+    "title": "노랑턱멧새 14마리 떼죽음…진주 도심 ‘유리벽 충돌’ 대책 필요",
+    "desc": "경남 진주, 유리창 충돌",
+    "source": "단디뉴스",
+    "sourceUrl": "http://www.dandinews.com/news/articleView.html?idxno=17387",
+    "date": "2026-08-24"
+  },
+  {
+    "id": "seed-006",
+    "sido": [
+      "seoul"
+    ],
+    "sigungu": "영등포구",
+    "cause": "habitat",
+    "title": "“여의도 불꽃축제, 람사르습지 ‘밤섬’ 생태계 훼손···조류에도 피해”",
+    "desc": "서울 여의도, 불꽃놀이로 인한 생태계 파괴",
+    "source": "경향신문",
+    "sourceUrl": "https://n.news.naver.com/article/032/0003468582",
+    "date": "2026-09-05"
+  },
+  {
+    "id": "seed-007",
+    "sido": [
+      "seoul"
+    ],
+    "sigungu": "중구",
+    "cause": "habitat",
+    "title": "\"윙윙\"···사람에 꿀 뺏기고 기온 상승에 과로사하는 벌 [위기의 도심동물들]",
+    "desc": "서울 중구, 기후변화로 인한 서식지 감소 및 생존 위협",
+    "source": "한국일보",
+    "sourceUrl": "https://n.news.naver.com/article/469/0000871057",
+    "date": "2025-06-18"
+  },
+  {
+    "id": "seed-008",
+    "sido": [
+      "gwangju"
+    ],
+    "sigungu": "",
+    "cause": "roadkill",
+    "title": "멸종위기 맹꽁이 18마리 광주 도심서 발견…\"로드킬 위험\"",
+    "desc": "전남 광주, 멸종위기종 로드킬",
+    "source": "뉴스1",
+    "sourceUrl": "https://n.news.naver.com/article/421/0009004808",
+    "date": "2026-06-15"
+  },
+  {
+    "id": "seed-009",
+    "sido": [
+      "south-gyeongsang"
+    ],
+    "sigungu": "창원시",
+    "cause": "roadkill",
+    "title": "겨울잠 깬 두꺼비, 도심 곳곳에서 '로드킬'",
+    "desc": "경남 창원, 로드킬",
+    "source": "KNN",
+    "sourceUrl": "https://news.knn.co.kr/news/article/169726",
+    "date": "2025-03-05"
+  },
+  {
+    "id": "seed-010",
+    "sido": [
+      "ulsan"
+    ],
+    "sigungu": "중구",
+    "cause": "roadkill",
+    "title": "황방산 두꺼비 어디로?…기후변화·로드킬 ‘이중고’",
+    "desc": "울산 중구, 로드킬",
+    "source": "KBS",
+    "sourceUrl": "https://n.news.naver.com/article/056/0012217560",
+    "date": "2026-07-14"
+  },
+  {
+    "id": "seed-011",
+    "sido": [
+      "gyeonggi"
+    ],
+    "sigungu": "용인시",
+    "cause": "roadkill",
+    "title": "용인 야생동물 구조 '도 최다', 처인구 국도변 로드킬 심각",
+    "desc": "경기 용인, 로드킬",
+    "source": "오마이뉴스",
+    "sourceUrl": "https://n.news.naver.com/article/047/0002514723",
+    "date": "2026-05-07"
+  },
+  {
+    "id": "seed-012",
+    "sido": [
+      "nationwide"
+    ],
+    "sigungu": "",
+    "cause": "habitat",
+    "title": "6월_이달의 멸종위기종_담비",
+    "desc": "한반도 및 국외, 위협 요인: 산림 훼손, 서식지 단절, 찻길사고 등",
+    "source": "국립생태원",
+    "sourceUrl": "https://www.nie.re.kr/nie/bbs/BMSR00085/view.do?boardId=695967833",
+    "date": "2026-06-02"
+  },
+  {
+    "id": "seed-013",
+    "sido": [
+      "gyeonggi"
+    ],
+    "sigungu": "화성시",
+    "cause": "roadkill",
+    "title": "교외 도로에서만 일어난다?…반복되는 도심 로드킬",
+    "desc": "경기 동탄, 로드킬",
+    "source": "MBN",
+    "sourceUrl": "https://n.news.naver.com/article/057/0001855246",
+    "date": "2024-11-21"
+  },
+  {
+    "id": "seed-014",
+    "sido": [
+      "gwangju"
+    ],
+    "sigungu": "",
+    "cause": "roadkill",
+    "title": "앗! 고양이 ...광주 도심 로드킬 피해 80% 집중",
+    "desc": "전남 광주, 로드킬",
+    "source": "드림투데이",
+    "sourceUrl": "http://www.gjdream.com/news/articleView.html?idxno=604903",
+    "date": "2020-12-16"
+  },
+  {
+    "id": "seed-015",
+    "sido": [
+      "north-jeolla"
+    ],
+    "sigungu": "부안군",
+    "cause": "roadkill",
+    "title": "전북 하루 4.7건 꼴 로드킬 발생⋯운전자 안전 위협",
+    "desc": "전북 부안군, 로드킬",
+    "source": "전북일보",
+    "sourceUrl": "https://www.jjan.kr/article/20220322580376",
+    "date": "2022-03-22"
+  },
+  {
+    "id": "seed-016",
+    "sido": [
+      "seoul",
+      "gyeonggi"
+    ],
+    "sigungu": "",
+    "cause": "roadkill",
+    "title": "고양이 로드킬, 수도권에서만 하루 55마리가 당한다",
+    "desc": "서울 경기, 로드킬",
+    "source": "한국일보",
+    "sourceUrl": "https://n.news.naver.com/article/469/0000657346",
+    "date": "2022-02-10"
+  },
+  {
+    "id": "seed-017",
+    "sido": [
+      "gyeonggi"
+    ],
+    "sigungu": "광명시",
+    "cause": "etc",
+    "title": "반려견은 물놀이장에 풍덩…유기견은 철창 안에서 헉헉",
+    "desc": "경기도 광명시, 유기견 폭염 피해서 수영하는 모습 포착",
+    "source": "연합뉴스TV",
+    "sourceUrl": "https://n.news.naver.com/article/422/0000891258",
+    "date": "2026-08-01"
+  },
+  {
+    "id": "seed-018",
+    "sido": [
+      "south-jeolla"
+    ],
+    "sigungu": "장흥군",
+    "cause": "conflict",
+    "title": "‘슬픈 犬生’…생지옥 같은 동물보호소 곳곳에 있었다",
+    "desc": "전남 광주 장흥군 및 무안군, 유기동물 방치 및 학대",
+    "source": "광주일보",
+    "sourceUrl": "http://m.kwangju.co.kr/article.php?aid=1788348600802964006",
+    "date": "2026-09-02"
+  },
+  {
+    "id": "seed-019",
+    "sido": [
+      "ulsan"
+    ],
+    "sigungu": "",
+    "cause": "collision",
+    "title": "울산서 10년간 새 2247마리, 건물 유리창에 충돌",
+    "desc": "울산, 조류 전선 및 건물 충돌",
+    "source": "중앙일보",
+    "sourceUrl": "https://n.news.naver.com/article/025/0003443664",
+    "date": "2025-05-27"
+  },
+  {
+    "id": "seed-020",
+    "sido": [
+      "seoul"
+    ],
+    "sigungu": "광진구",
+    "cause": "collision",
+    "title": "유리창 충돌사 새들 연간 765만 마리…왜?",
+    "desc": "서울시, 건축물에 '조류 충돌 방지 테이프' 설치 지원",
+    "source": "노컷뉴스",
+    "sourceUrl": "https://n.news.naver.com/article/079/0003997827",
+    "date": "2025-03-04"
+  },
+  {
+    "id": "seed-021",
+    "sido": [
+      "south-gyeongsang"
+    ],
+    "sigungu": "거제시",
+    "cause": "collision",
+    "title": "천연기념물 '팔색조' 유리창 충돌 폐사 속출",
+    "desc": "천연기념물인 팔색조가 여름철 번식기를 맞아 남해안을 찾아왔다가 유리창에 충돌해 폐사하는 글래스 킬이 속출하고 있습니다.",
+    "source": "KNN",
+    "sourceUrl": "https://news.knn.co.kr/news/article/173238",
+    "date": "2025-05-28"
+  },
+  {
+    "id": "seed-022",
+    "sido": [
+      "jeju"
+    ],
+    "sigungu": "제주시",
+    "cause": "collision",
+    "title": "3.9초에 한 마리씩 유리창에 ‘쿵’…천연기념물도 위협",
+    "desc": "제주시 화북일동에서도 유리창에 부딪혀 뇌진탕으로 날지 못하는 팔색조(천연기념물 제204호)가 구조됐습니다.",
+    "source": "KBS",
+    "sourceUrl": "https://n.news.naver.com/article/056/0011967455",
+    "date": "2025-06-10"
+  },
+  {
+    "id": "seed-023",
+    "sido": [
+      "nationwide"
+    ],
+    "sigungu": "",
+    "cause": "collision",
+    "title": "투명 유리창, 야생조류의 마지막 비행![에코피디아]",
+    "desc": "우리나라에서만 매년 약 800만 마리, 하루 2만 마리의 새들이 유리창 충돌로 목숨을 잃고 있습니다.",
+    "source": "헤럴드경제",
+    "sourceUrl": "https://n.news.naver.com/article/016/0002528712",
+    "date": "2025-09-14"
+  },
+  {
+    "id": "seed-024",
+    "sido": [
+      "seoul"
+    ],
+    "sigungu": "영등포구",
+    "cause": "collision",
+    "title": "파란 하늘 반사된 유리창에…새들이 뛰어들어 죽었다",
+    "desc": "유리창 충돌해 죽는 새 800만 마리, ‘눈 깜빡할 새의 죽음’에 대하여",
+    "source": "미디어오늘",
+    "sourceUrl": "https://n.news.naver.com/article/006/0000126969",
+    "date": "2024-11-14"
+  },
+  {
+    "id": "seed-025",
+    "sido": [
+      "jeju"
+    ],
+    "sigungu": "",
+    "cause": "collision",
+    "title": "한국서 12년 만에 처음…도심 건물과 충돌 피 흘리며 발견된 '멸종위기' 동물 정체",
+    "desc": "이어 \"매년 수만 마리의 새들이 유리창 충돌로 부상을 입거나 목숨을 잃고 있다\"",
+    "source": "위키트리",
+    "sourceUrl": "https://www.wikitree.co.kr/articles/1056403",
+    "date": "2025-06-14"
+  },
+  {
+    "id": "seed-026",
+    "sido": [
+      "nationwide"
+    ],
+    "sigungu": "",
+    "cause": "collision",
+    "title": "유리창에 부닥쳐 죽는 새, 한 해 800만 마리",
+    "desc": "월로 환산하면 65만 마리, 매일 2만 마리가 넘는 새가 인간 때문에 죽음을 맞고 있다.",
+    "source": "오마이뉴스",
+    "sourceUrl": "https://m.entertain.naver.com/home/article/047/0002439153",
+    "date": "2024-07-08"
+  },
+  {
+    "id": "seed-027",
+    "sido": [
+      "gwangju"
+    ],
+    "sigungu": "",
+    "cause": "conflict",
+    "title": "무허가 공기총으로 이웃 개 쏴 죽인 60대 남성, 집행유예 3년",
+    "desc": "당시 밭에는 작물이 심어지지 않았는데, 김씨는 농작물 피해 우려를 살상 이유로 들었다.",
+    "source": "연합뉴스",
+    "sourceUrl": "https://n.news.naver.com/article/001/0016271332",
+    "date": "2026-08-26"
+  },
+  {
+    "id": "seed-028",
+    "sido": [
+      "nationwide"
+    ],
+    "sigungu": "캐나다, 토론토",
+    "cause": "collision",
+    "title": "토론토 연안 고층 빌딩 숲 \"새들의 무덤\"... 매년 수백만 마리 충돌",
+    "desc": "광역 토론토 고층 빌딩 인공 불빛이 방향감각 상실 유도… 유리창 충돌 잔혹사 지속",
+    "source": "미주중앙일보",
+    "sourceUrl": "https://www.koreadaily.com/article/20260605062520254",
+    "date": "2026-06-05"
+  },
+  {
+    "id": "seed-029",
+    "sido": [
+      "nationwide"
+    ],
+    "sigungu": "",
+    "cause": "etc",
+    "title": "지난해 반려동물 관련 소비자 피해 10건 중 7건이 ‘분양 피해’",
+    "desc": "지난해 반려동물 관련 소비자 피해 상담 10건 중 7건은 분양과 관련된 피해 사례인 것으로 나타났다.",
+    "source": "더퍼블릭",
+    "sourceUrl": "https://www.thepublic.kr/news/articleView.html?idxno=62117",
+    "date": "2021-09-16"
+  }
+]

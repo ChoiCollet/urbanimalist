@@ -93,6 +93,7 @@ function paintMap() {
     const count = countByProvince(id);
     path.style.fill = colorScale(count);
     path.setAttribute("data-count", count);
+    path.classList.toggle("selected", state.province === id);
     let title = path.querySelector("title");
     if (!title) {
       title = document.createElementNS("http://www.w3.org/2000/svg", "title");
@@ -140,6 +141,7 @@ function renderBreadcrumb() {
 function goProvinceList() {
   state.province = null;
   state.sigungu = null;
+  showNationalMap();
   paintMap();
   showLevel(1);
 }
@@ -147,6 +149,12 @@ function goProvinceList() {
 function goProvince(id) {
   state.province = id;
   state.sigungu = null;
+  if (SUBMAP_PROVINCES[id]) {
+    renderSubmap(id);
+  } else {
+    showNationalMap();
+    paintMap();
+  }
   renderLevel2();
   showLevel(2);
 }
@@ -160,8 +168,28 @@ function goSigungu(name) {
 function goNationwide() {
   state.province = NATIONWIDE_ID;
   state.sigungu = null;
+  showNationalMap();
+  paintMap();
   renderLevel3();
   showLevel(3);
+}
+
+// ---------- 지도 박스 전환 (전국 지도 ⇄ 서울·인천·경기 서브맵) ----------
+
+const nationalMapHolder = document.getElementById("national-map-holder");
+const submapHolder = document.getElementById("submap-holder");
+const submapNote = document.getElementById("submap-note");
+
+function showNationalMap() {
+  nationalMapHolder.hidden = false;
+  submapHolder.hidden = true;
+  submapNote.hidden = true;
+}
+
+function showSubmapBox() {
+  nationalMapHolder.hidden = true;
+  submapHolder.hidden = false;
+  submapNote.hidden = false;
 }
 
 // ---------- 시군구 서브맵 (서울·인천·경기) ----------
@@ -183,21 +211,21 @@ async function loadSubmap(provinceId) {
 }
 
 async function renderSubmap(provinceId) {
-  const box = document.getElementById("submap-box");
   const svgText = await loadSubmap(provinceId);
   if (!svgText) {
-    box.hidden = true;
+    showNationalMap();
     return;
   }
-  box.hidden = false;
-  box.querySelector(".submap-wrap").innerHTML = svgText;
+  submapHolder.innerHTML = svgText;
+  showSubmapBox();
 
-  const svgEl = box.querySelector("svg");
+  const svgEl = submapHolder.querySelector("svg");
   svgEl.querySelectorAll("path[data-name]").forEach((path) => {
     const name = path.getAttribute("data-name");
     const count = countBySigunguName(provinceId, name);
     path.style.fill = colorScale(count);
     path.style.cursor = "pointer";
+    path.classList.toggle("selected", state.sigungu === name);
     let title = path.querySelector("title");
     if (!title) {
       title = document.createElementNS("http://www.w3.org/2000/svg", "title");
@@ -256,12 +284,6 @@ function renderLevel2() {
   const wrap = levelPanels[2];
   const heading = wrap.querySelector(".panel-heading");
   heading.textContent = `${provinceName(state.province)} · 총 ${countByProvince(state.province)}건`;
-
-  if (SUBMAP_PROVINCES[state.province]) {
-    renderSubmap(state.province);
-  } else {
-    document.getElementById("submap-box").hidden = true;
-  }
 
   const list = sigunguListForProvince(state.province);
   const grid = wrap.querySelector(".sigungu-grid");
