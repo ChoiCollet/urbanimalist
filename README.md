@@ -38,7 +38,7 @@ urbanimalist/
 
 - 전국(시도) 지도: `index.html`에 삽입된 대한민국 시도 SVG는 [VictorCazanave/svg-maps](https://github.com/VictorCazanave/svg-maps) 프로젝트의 `south-korea` 패키지(MIT License)를 사용했습니다.
 - 시군구 서브맵(`assets/maps/seoul.svg`, `incheon.svg`, `gyeonggi.svg`): 통계청(KOSTAT) 2013년 행정구역 경계 데이터([southkorea/southkorea-maps](https://github.com/southkorea/southkorea-maps), `skorea_municipalities_geo_simple.json`)를 가공해 직접 생성했습니다. 인천 남구는 미추홀구로 이름만 갱신했으며, 최근 신설된 영종구·검단구·서해구·제물포구 등 세부 분구는 원본 경계 데이터가 없어 반영되지 않았습니다. 경기도의 수원시·성남시·안양시·안산시·고양시·용인시·부천시는 구 경계를 하나로 병합해 시 단위로만 표시합니다. 서울·인천·경기 외 지역은 시군구 목록(칩) 방식으로만 제공됩니다.
-- 김포시 읍면동 지도(`assets/maps/gimpo.svg`): 같은 저장소의 읍면동(emd) 단위 경계 데이터(`skorea_submunicipalities_geo_simple.json`)를 가공했습니다. 2013년 기준이라 이후 분동(예: 김포1동/김포2동의 추가 세분화)은 반영되어 있지 않습니다.
+- 김포시 읍면동 지도(`assets/maps/gimpo.svg`): [raqoon886/Local_HangJeongDong](https://github.com/raqoon886/Local_HangJeongDong)의 최신 행정동 경계 데이터를 가공했습니다. 3읍(통진읍·고촌읍·양촌읍), 3면(대곶면·월곶면·하성면), 7개 동(김포본동·사우동·풍무동·장기동·구래동·운양동·마산동) 총 13개 지역으로 구성되며, 장기본동은 장기동에 통합해 표시합니다.
 
 ## 자료 추가 방법
 

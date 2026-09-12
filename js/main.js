@@ -93,7 +93,6 @@ function paintMap() {
     const count = countByProvince(id);
     path.style.fill = colorScale(count);
     path.setAttribute("data-count", count);
-    path.classList.toggle("selected", state.province === id);
     let title = path.querySelector("title");
     if (!title) {
       title = document.createElementNS("http://www.w3.org/2000/svg", "title");
@@ -225,7 +224,6 @@ async function renderSubmap(provinceId) {
     const count = countBySigunguName(provinceId, name);
     path.style.fill = colorScale(count);
     path.style.cursor = "pointer";
-    path.classList.toggle("selected", state.sigungu === name);
     let title = path.querySelector("title");
     if (!title) {
       title = document.createElementNS("http://www.w3.org/2000/svg", "title");

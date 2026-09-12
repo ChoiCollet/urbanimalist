@@ -87,7 +87,6 @@ function paintGimpoMap() {
     const name = path.getAttribute("data-name");
     const count = gimpoCountByDong(name);
     path.style.fill = gimpoColorScale(count);
-    path.classList.toggle("selected", gimpoState.dong === name);
     let title = path.querySelector("title");
     if (!title) {
       title = document.createElementNS("http://www.w3.org/2000/svg", "title");

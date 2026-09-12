@@ -33,6 +33,8 @@
       <a href="index.html#map-tool">전국 지도</a>
       <a href="gimpo.html">김포시 지도</a>
       <a href="#gimpo-register">자료 등록</a>
+      <a href="#gimpo-how-to">이용 방법</a>
+      <a href="#gimpo-faq">FAQ</a>
       <a href="about.html">소개</a>
       <a href="contact.html">문의</a>
     </nav>
@@ -171,6 +173,53 @@ text.sgg-label {
         <label>JSON 불러오기<input id="gimpo-import-input" type="file" accept="application/json" hidden /></label>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="gimpo-how-to">
+  <div class="container">
+    <h2>이용 방법</h2>
+    <p class="section-sub">전국 지도와 같은 방식으로, 김포시 안에서만 더 좁게 동작합니다.</p>
+    <div class="steps">
+      <div class="step-card">
+        <span class="step-num">1</span>
+        <h3>지도에서 동 선택</h3>
+        <p>김포시 지도에서 읍·면·동을 클릭하면 색이 진할수록 자료가 많다는 뜻입니다.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">2</span>
+        <h3>사례 확인</h3>
+        <p>선택한 지역의 사례가 오른쪽 목록에 바로 나타납니다. '김포시 전체'를 누르면 초기화됩니다.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">3</span>
+        <h3>검색</h3>
+        <p>제목·설명·출처 키워드로 원하는 사례를 빠르게 찾을 수 있습니다.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">4</span>
+        <h3>직접 자료 등록</h3>
+        <p>조사한 사례를 양식에 맞게 입력하면 지도에 즉시 반영되고, JSON으로 내보내 팀원과 공유할 수 있습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gimpo-faq">
+  <div class="container">
+    <h2>자주 묻는 질문</h2>
+    <details class="faq-item">
+      <summary>이 지도는 전국 지도(지도1)와 어떻게 다른가요?</summary>
+      <p>전국 지도는 시도·시군구 단위로 넓게 보고, 이 지도는 김포시 읍·면·동 단위까지 좁혀서 봅니다. 등록한 자료와 저장 공간도 서로 완전히 분리되어 있어 섞이지 않습니다.</p>
+    </details>
+    <details class="faq-item">
+      <summary>등록한 자료는 어디에 저장되나요?</summary>
+      <p>사용하는 브라우저(localStorage)에 저장됩니다. 팀원과 합치려면 'JSON 내보내기'로 파일을 만들어 전달하고, 받는 사람은 'JSON 불러오기'로 합칠 수 있습니다.</p>
+    </details>
+    <details class="faq-item">
+      <summary>모든 읍·면·동이 지도에 다 나오나요?</summary>
+      <p>3읍(통진읍·고촌읍·양촌읍), 3면(대곶면·월곶면·하성면), 7개 동(김포본동·사우동·풍무동·장기동·구래동·운양동·마산동) 총 13개 지역으로 구분되어 있습니다. 장기본동은 장기동에 통합해 표시합니다.</p>
+    </details>
   </div>
 </section>
 

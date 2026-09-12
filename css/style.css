@@ -139,7 +139,7 @@ section .section-sub { color: var(--ink-soft); margin-bottom: 24px; font-size: 0
 .map-wrap svg { width: 100%; height: auto; display: block; }
 .map-wrap svg path { stroke: #fff; stroke-width: 1.2; transition: filter 0.15s ease; }
 .map-wrap svg path.hovered { filter: brightness(0.9); }
-.map-wrap svg path.selected { stroke: var(--accent); stroke-width: 2.5; }
+
 
 .map-legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 12px; font-size: 0.82rem; color: var(--ink-soft); }
 .map-legend span { display: inline-flex; align-items: center; gap: 5px; }
@@ -170,7 +170,7 @@ section .section-sub { color: var(--ink-soft); margin-bottom: 24px; font-size: 0
 .submap-wrap svg { width: 100%; height: auto; display: block; max-width: 460px; margin: 0 auto; }
 .submap-wrap svg path { stroke: #fff; stroke-width: 1; transition: filter 0.15s ease; }
 .submap-wrap svg path.hovered { filter: brightness(0.9); }
-.submap-wrap svg path.selected { stroke: var(--accent); stroke-width: 2.2; }
+
 .submap-note { font-size: 0.78rem; color: var(--ink-soft); margin: 8px 0 0; }
 
 .sigungu-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
