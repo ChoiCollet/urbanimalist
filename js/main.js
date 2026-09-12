@@ -199,7 +199,7 @@ async function loadSubmap(provinceId) {
   const url = SUBMAP_PROVINCES[provinceId];
   if (!url) return null;
   try {
-    const res = await fetch(url, { cache: "force-cache" });
+    const res = await fetch(url, { cache: "no-cache" });
     if (!res.ok) throw new Error("submap fetch failed");
     const text = await res.text();
     submapCache[provinceId] = text;
