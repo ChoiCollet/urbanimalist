@@ -1,6 +1,6 @@
 <svg id="sido-map" viewBox="0 0 640 931" xmlns="http://www.w3.org/2000/svg">
 <style>
-path { fill: #eceae1; stroke: #ffffff; stroke-width: 1; }
+path { fill: #dde2d3; stroke: #ffffff; stroke-width: 1; }
 text.sgg-label {
   fill: #22291f;
   font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
