@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>어반애니멀리스트 | 우리 동네 도시 동물 피해 지도</title>
-<meta name="description" content="대한민국 지도에서 지역별 도시 동물(로드킬·서식지 파괴 등) 피해 사례를 한눈에 찾아보고, 직접 조사한 자료를 등록·공유할 수 있는 무료 웹 도구입니다." />
-<meta name="keywords" content="로드킬, 도시 동물, 생태통로, 동물 친화 도시, 학생주도 프로젝트, 봉사활동, 지도 시각화" />
-<link rel="canonical" href="https://urbanimalist.pages.dev/" />
-<meta property="og:title" content="어반애니멀리스트 | 우리 동네 도시 동물 피해 지도" />
-<meta property="og:description" content="지역별 도시 동물 피해 사례를 지도에서 찾아보고 직접 등록할 수 있는 도구" />
+<title>전국 야생동물 구조·치료 통계 (2020~2025) | 어반애니멀리스트</title>
+<meta name="description" content="기후에너지환경부·야생동물 구조관리센터가 공표한 2020~2025년 전국 야생동물 구조·치료 현황을 연도별 추이 그래프와 지도로 정리했습니다." />
+<meta name="keywords" content="야생동물 구조센터, 로드킬 통계, 구조 치료 현황, 기후에너지환경부, 연도별 추이" />
+<link rel="canonical" href="https://urbanimalist.pages.dev/stats.html" />
+<meta property="og:title" content="전국 야생동물 구조·치료 통계 (2020~2025) | 어반애니멀리스트" />
+<meta property="og:description" content="2020~2025년 전국 야생동물 구조·치료 현황 연도별 추이" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://urbanimalist.pages.dev/" />
+<meta property="og:url" content="https://urbanimalist.pages.dev/stats.html" />
 <link rel="stylesheet" href="css/style.css" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "어반애니멀리스트",
-  "url": "https://urbanimalist.pages.dev/",
-  "applicationCategory": "EducationalApplication",
-  "description": "대한민국 지역별 도시 동물 피해 사례를 지도에서 조회하고 등록하는 웹 도구",
-  "operatingSystem": "All"
+  "@type": "Dataset",
+  "name": "전국 야생동물 구조·치료 현황 (2020~2025)",
+  "description": "기후에너지환경부 야생동물 구조관리센터 공표 자료를 가공한 연도별 구조·치료 통계",
+  "url": "https://urbanimalist.pages.dev/stats.html",
+  "temporalCoverage": "2020/2025",
+  "creator": { "@type": "Organization", "name": "기후에너지환경부" }
 }
 </script>
 </head>
@@ -30,12 +30,12 @@
   <div class="container">
     <a href="index.html" class="logo">🐾 어반애니멀리스트<span class="dot">.</span></a>
     <nav class="main-nav">
-      <a href="#map-tool">전국 지도</a>
+      <a href="index.html#map-tool">전국 지도</a>
       <a href="gimpo.html">김포시 지도</a>
       <a href="stats.html">구조 통계</a>
-      <a href="#register">자료 등록</a>
-      <a href="#how-to">이용 방법</a>
-      <a href="#faq">FAQ</a>
+      <a href="index.html#register">자료 등록</a>
+      <a href="index.html#how-to">이용 방법</a>
+      <a href="index.html#faq">FAQ</a>
       <a href="about.html">소개</a>
       <a href="contact.html">문의</a>
     </nav>
@@ -44,30 +44,36 @@
 
 <section class="hero">
   <div class="container">
-    <h1>도시 속 동물, 우리 동네는 안전할까요?</h1>
+    <h1>전국 야생동물 구조·치료 통계 (2020~2025)</h1>
     <p>
-      로드킬·서식지 파괴 등 도시 동물 피해 사례를 지역별로 조사해 지도 위에 쌓아가는 프로젝트입니다.
-      전국 지도를 클릭해 시도 → 시군구 순으로 자료를 확인하고, 직접 조사한 사례를 등록해 함께 기록을 완성해 보세요.
+      기후에너지환경부가 매년 공표하는 전국 야생동물 구조관리센터 실적 자료 6년치를 모아 연도별 추이로 정리했습니다.
+      구조개체수, 지역별, 종별, 사고원인별, 치료결과 순으로 그래프와 지도를 통해 변화를 확인할 수 있습니다.
     </p>
-    <a href="#map-tool" class="cta-btn">지도 살펴보기 ↓</a>
+    <a href="#stats-total" class="cta-btn">통계 살펴보기 ↓</a>
   </div>
 </section>
 
-<section id="map-tool">
+<section id="stats-total">
   <div class="container">
-    <h2>지역별 도시 동물 피해 지도</h2>
-    <p class="section-sub">지도의 시도를 클릭하면 해당 지역의 시군구별 자료를, 시군구를 다시 클릭하면 세부 사례를 볼 수 있습니다. (전국 → 시도 → 시군구 3단계)</p>
-
-    <div class="tool-header">
-      <div id="breadcrumb"></div>
-      <input id="global-search" type="search" placeholder="제목·설명·출처로 검색" />
+    <h2>연도별 총 구조개체수</h2>
+    <p class="section-sub">2020년 15,397마리에서 2025년 22,303마리로 6년간 약 45% 증가했습니다.</p>
+    <div class="chart-box">
+      <canvas id="chart-total"></canvas>
     </div>
+  </div>
+</section>
+
+<section id="stats-region">
+  <div class="container">
+    <h2>지역별 구조 현황</h2>
+    <p class="section-sub">연도를 선택하면 해당 연도의 지역별 구조 개체수가 지도에 표시됩니다. 국립공원 소속 센터 실적은 특정 시도에 속하지 않아 지도에는 표시되지 않고, 아래 그래프에 별도 항목으로 표시됩니다.</p>
+
+    <div class="year-tabs" id="region-year-tabs"></div>
 
     <div class="tool-grid">
       <div>
         <div class="map-wrap">
-          <div id="national-map-holder">
-<svg id="korea-map"
+<svg id="stats-map"
 	xmlns="http://www.w3.org/2000/svg"
 	viewBox="0 0 524 631"
 	aria-label="Map of South Korea"
@@ -157,181 +163,68 @@
 		aria-label="Ulsan"
 		d="m 361.40429,346.70884 1.8,1.47 2.01,0.31 0.98,0.59 0.23,0.82 0,0 -0.42,2.85 0,0 0.28,0.77 0.74,0.33 0,0 1.97,0.66 0,0 1.43,-0.25 2.82,-1.84 1.12,-0.31 0,0 1.48,-0.01 0,0 4.89,1.74 0,0 1.76,0.42 0,0 2.9,0.41 0.7,1.45 -0.03,1.38 -0.74,0.2 -0.39,0.58 0.53,3.14 -0.61,1.06 -0.05,1.35 -0.11,0.36 -1.02,0.16 0.03,0.48 0.73,-0.39 -0.18,1.58 -1.21,0.51 0.03,0.29 0.84,-0.16 0.13,0.61 -1.26,0.61 0.18,0.45 0.95,-0.39 0.36,0.65 -0.47,-0.07 -0.55,1.25 -1,-0.41 0.08,0.35 -1,0.13 0.05,0.51 -0.52,0.48 -0.42,-0.19 -0.24,-1.48 0.4,-0.99 -0.63,-0.84 -0.53,-0.06 0.19,-1.38 -0.82,-1.57 -1.94,-2.13 -1.5,-0.48 0,0.68 1.39,0.48 0.92,1.19 -0.08,1.12 0.97,0.26 -0.07,0.83 0.42,0.62 -0.32,0.44 -0.52,-0.22 -1.03,0.35 -0.5,-0.45 0.53,0.71 0.97,-0.26 0.89,1.58 -0.63,0.45 -0.13,1.15 -0.65,0.23 -1.19,1.41 -0.68,-0.03 -0.5,-1.13 -1.05,-0.54 0.68,0.8 0.08,2.21 0.29,0.26 0.87,-0.32 -0.5,0.99 1.36,-0.73 -0.41,0.73 0.41,0.87 -0.31,0.39 -1.02,0.06 -0.24,0.77 0.39,1.15 0.71,0 0.03,0.58 -0.5,0.16 -0.29,1.41 -0.81,0.36 -0.21,0.99 0.1,0.74 0.97,0.29 0.71,1.47 -1.49,0.87 -0.56,-0.55 -0.63,0.06 -0.5,1.13 -0.6,-0.03 -0.1,0.67 -0.5,0.22 -0.32,1.09 -1.07,0.07 -0.27,1.18 -1.15,-0.13 -0.29,-0.8 -0.55,0.26 0.17,-1.51 -1,-1.68 0,0 -1.34,-1.34 -3.98,0 -0.04,-0.76 0,0 -1.54,-1.88 0,0 -3.09,-0.21 0,0 -2.23,-1.89 -3.43,-3.98 0,0 -3.26,-3.36 -2.4,-0.2 0,0 -2.75,0 -2.23,-1.05 -0.34,-4.83 2.23,-1.89 0,0 1.2,-1.05 0,-1.46 -1.47,-2.43 0,0 3.92,-3.09 0,0 1.66,-0.17 0,0 0.68,0.13 0.65,-0.87 -1.35,-2.48 -0.22,-1.06 0.59,-0.5 4.16,-2.57 3.11,-1.02 1.63,0.29 2.59,-0.65 z"
 	/>
-</svg>
-          </div>
-          <div id="submap-holder" class="submap-wrap" hidden></div>
-        </div>
-        <div class="map-legend">
-          <span><i style="background:var(--map-empty)"></i>자료 없음</span>
-          <span><i style="background:var(--map-low)"></i>1~2건</span>
-          <span><i style="background:var(--map-mid)"></i>3~5건</span>
-          <span><i style="background:var(--map-high)"></i>6건 이상</span>
-        </div>
-        <p id="submap-note" class="submap-note" hidden>지도를 클릭해도 되고, 아래 목록에서 시군구를 선택해도 됩니다.</p>
-        <div class="nationwide-box">
-          <span>특정 지역이 아닌 <strong>전국 단위 자료</strong>도 모아뒀어요.</span>
-          <button id="nationwide-btn" type="button">전국 자료 보기</button>
+</svg>        </div>
+        <div class="map-legend" id="region-map-legend">
+          <span><i style="background:var(--map-empty)"></i>낮음</span>
+          <span><i style="background:var(--map-low)"></i></span>
+          <span><i style="background:var(--map-mid)"></i></span>
+          <span><i style="background:var(--map-high)"></i>높음</span>
         </div>
       </div>
-
       <div>
-        <div id="panel-level-1">
-          <p class="panel-heading">지역을 선택해 주세요</p>
-          <p class="empty-msg">위 지도에서 시도를 클릭하면 해당 지역의 시군구별 자료 개수와 세부 사례를 여기서 확인할 수 있습니다. 색이 진할수록 등록된 자료가 많은 지역입니다.</p>
-        </div>
-
-        <div id="panel-level-2" hidden>
-          <p class="panel-heading"></p>
-          <div class="sigungu-grid"></div>
-          <button class="view-all-btn" type="button">이 시도 전체 자료 보기</button>
-        </div>
-
-        <div id="panel-level-3" hidden>
-          <p class="panel-heading"></p>
-          <div class="entry-list"></div>
-        </div>
+        <p class="panel-heading" id="region-year-heading">2025년 지역별 구조 순위</p>
+        <div id="region-rank-list" class="entry-list"></div>
       </div>
+    </div>
+
+    <h3 class="subsection-title">주요 지역 연도별 추이</h3>
+    <p class="section-sub">구조개체수 상위 6개 지역(경기·충남·서울·부산·충북·강원)의 6년간 변화입니다.</p>
+    <div class="chart-box">
+      <canvas id="chart-region"></canvas>
     </div>
   </div>
 </section>
 
-<section id="register">
+<section id="stats-species">
   <div class="container">
-    <h2>자료 등록하기</h2>
-    <p class="section-sub">직접 조사한 뉴스·보고서 기반 사례를 등록하면 이 브라우저에 저장되고, 지도와 목록에 바로 반영됩니다. 팀원과 자료를 합치려면 아래 '내보내기'로 JSON 파일을 만들어 공유하세요.</p>
-
-    <form id="entry-form">
-      <div class="form-grid">
-        <div>
-          <label for="field-sido">시도 *</label>
-          <select id="field-sido" name="sido" required></select>
-        </div>
-        <div>
-          <label for="field-sigungu">시군구 (선택)</label>
-          <input id="field-sigungu" name="sigungu" type="text" placeholder="예: 김포시, 여의도동" />
-        </div>
-        <div>
-          <label for="field-cause">원인 유형</label>
-          <select id="field-cause" name="cause"></select>
-        </div>
-        <div>
-          <label for="field-date">발생·보도 날짜</label>
-          <input id="field-date" name="date" type="date" />
-        </div>
-        <div class="full">
-          <label for="field-title">제목 *</label>
-          <input id="field-title" name="title" type="text" required placeholder="예: OO동 도로 인근 고라니 로드킬 발생" />
-        </div>
-        <div class="full">
-          <label for="field-desc">상세 설명</label>
-          <textarea id="field-desc" name="desc" placeholder="조사한 기사·보고서 내용을 요약해 주세요."></textarea>
-        </div>
-        <div>
-          <label for="field-source">출처명</label>
-          <input id="field-source" name="source" type="text" placeholder="예: OO일보" />
-        </div>
-        <div>
-          <label for="field-sourceUrl">출처 링크</label>
-          <input id="field-sourceUrl" name="sourceUrl" type="url" placeholder="https://" />
-        </div>
-      </div>
-      <button class="submit-btn" id="form-submit-btn" type="submit">자료 등록</button>
-      <button class="cancel-btn" id="form-cancel-btn" type="button" hidden>수정 취소</button>
-      <span id="form-status"></span>
-    </form>
-
-    <div class="my-entries-header">
-      <h3>내가 등록한 자료 (<span id="my-entries-count">0</span>)</h3>
-      <div class="io-buttons">
-        <button id="export-btn" type="button">JSON 내보내기</button>
-        <label>JSON 불러오기<input id="import-input" type="file" accept="application/json" hidden /></label>
-      </div>
-    </div>
-    <div id="my-entries-list" class="entry-list"></div>
-  </div>
-</section>
-
-<section id="how-to">
-  <div class="container">
-    <h2>이용 방법</h2>
-    <p class="section-sub">복잡한 가입 절차 없이 누구나 바로 사용할 수 있습니다.</p>
-    <div class="steps">
-      <div class="step-card">
-        <span class="step-num">1</span>
-        <h3>지도에서 지역 선택</h3>
-        <p>전국 지도에서 궁금한 시도를 클릭하세요. 자료가 많을수록 진한 색으로 표시됩니다.</p>
-      </div>
-      <div class="step-card">
-        <span class="step-num">2</span>
-        <h3>시군구까지 좁히기</h3>
-        <p>선택한 시도 안에서 시군구 칩을 클릭하면 해당 지역의 세부 사례만 모아볼 수 있습니다.</p>
-      </div>
-      <div class="step-card">
-        <span class="step-num">3</span>
-        <h3>사례 확인 및 검색</h3>
-        <p>제목·설명·출처 키워드로 검색해 원하는 사례를 빠르게 찾을 수 있습니다.</p>
-      </div>
-      <div class="step-card">
-        <span class="step-num">4</span>
-        <h3>직접 자료 등록</h3>
-        <p>조사한 뉴스·보고서를 양식에 맞게 입력하면 지도에 즉시 반영되고, JSON으로 내보내 팀원과 공유할 수 있습니다.</p>
-      </div>
+    <h2>종별 비중 변화</h2>
+    <p class="section-sub">구조된 야생동물 중 조류가 꾸준히 70%대 중후반을 차지하며 가장 큰 비중을 보입니다. (단위: %)</p>
+    <div class="chart-box">
+      <canvas id="chart-species"></canvas>
     </div>
   </div>
 </section>
 
-<section id="features">
+<section id="stats-cause">
   <div class="container">
-    <h2>주요 기능</h2>
-    <div class="features">
-      <div class="feature-card">
-        <h3>3단계 드릴다운 지도</h3>
-        <p>전국 → 시도 → 시군구 순으로 좁혀가며 자료를 확인해 지역 맥락을 한눈에 파악할 수 있습니다.</p>
-      </div>
-      <div class="feature-card">
-        <h3>원인 유형별 태그</h3>
-        <p>로드킬, 서식지 파괴, 구조물 충돌 등 원인을 분류해 어떤 문제가 두드러지는지 비교할 수 있습니다.</p>
-      </div>
-      <div class="feature-card">
-        <h3>직접 등록 · 내보내기</h3>
-        <p>조사한 사례를 바로 등록하고, JSON 파일로 내보내 팀원과 자료를 합칠 수 있습니다.</p>
-      </div>
-      <div class="feature-card">
-        <h3>키워드 검색</h3>
-        <p>제목·설명·출처에서 키워드를 검색해 원하는 사례를 빠르게 찾습니다.</p>
-      </div>
+    <h2>사고원인별 변화</h2>
+    <p class="section-sub">미아(어미 잃음)와 유리창·구조물 충돌이 매년 가장 큰 비중을 차지합니다. 2023년부터 추락, 2024년부터 중독(농약 등) 항목이 새로 집계되기 시작했습니다. (단위: %)</p>
+    <div class="chart-box">
+      <canvas id="chart-cause"></canvas>
     </div>
   </div>
 </section>
 
-<section id="faq">
+<section id="stats-treatment">
   <div class="container">
-    <h2>자주 묻는 질문</h2>
-    <details class="faq-item">
-      <summary>등록한 자료는 어디에 저장되나요?</summary>
-      <p>기본적으로 사용하는 브라우저(localStorage)에 저장됩니다. 다른 기기나 팀원과 공유하려면 'JSON 내보내기'로 파일을 만들어 전달하고, 받는 사람은 'JSON 불러오기'로 합칠 수 있습니다.</p>
-    </details>
-    <details class="faq-item">
-      <summary>지도에 표시되는 색은 무엇을 의미하나요?</summary>
-      <p>해당 시도에 등록된 자료 건수를 4단계 색상으로 표현합니다. 진한 색일수록 자료가 많이 모인 지역입니다.</p>
-    </details>
-    <details class="faq-item">
-      <summary>전국 단위 자료는 어디서 보나요?</summary>
-      <p>특정 지역으로 한정할 수 없는 통계·연구 자료는 '전국 자료 보기' 버튼을 눌러 별도로 확인할 수 있습니다.</p>
-    </details>
-    <details class="faq-item">
-      <summary>이 프로젝트는 누가 만들었나요?</summary>
-      <p>학생주도 프로젝트 봉사활동의 일환으로 제작된 비영리 정보 공유 도구입니다. 자세한 내용은 <a href="about.html">소개 페이지</a>를 참고하세요.</p>
-    </details>
+    <h2>치료결과 변화</h2>
+    <p class="section-sub">치료 후 방사(방생)되는 비율은 6년간 35~36%대로 큰 변화 없이 유지되고 있습니다. (단위: %)</p>
+    <div class="chart-box">
+      <canvas id="chart-treatment"></canvas>
+    </div>
   </div>
 </section>
 
-<section id="about-summary">
+<section id="stats-sources">
   <div class="container">
-    <h2>프로젝트 소개</h2>
+    <h2>출처 및 참고자료</h2>
     <div class="about-summary">
-      <p>어반애니멀리스트는 인간 중심으로 설계된 도시 환경에서 동물들이 겪는 위험과 피해 사례를 지역별로 기록하고 시각화하는 프로젝트입니다. 로드킬 통계, 생태통로 효과 분석 등 공신력 있는 자료를 함께 담아, 도시와 동물이 공존할 수 있는 방법을 고민하는 계기를 만들고자 합니다.</p>
-      <p>더 자세한 프로젝트 배경과 운영 원칙은 <a href="about.html">소개 페이지</a>에서, 개인정보 처리 방침은 <a href="privacy.html">여기</a>에서 확인하실 수 있습니다.</p>
+      <p>이 페이지의 모든 수치는 기후에너지환경부가 공표한 <strong>2020~2025년 야생동물 구조관리센터 구조·치료 현황</strong> 원문 자료를 그대로 정리한 것입니다. 연도별 합계와 지역별 수치의 합이 정확히 일치하는지 직접 검산했습니다.</p>
+      <p>
+        <a href="https://mcee.go.kr/home/web/public_info/read.do?menuId=10357&publicInfoId=142" target="_blank" rel="noopener noreferrer">기후에너지환경부 공표 자료 원문 보기</a><br />
+        <a href="https://mcee.go.kr/home/web/board/read.do?boardId=1647400&boardMasterId=939&menuId=10598" target="_blank" rel="noopener noreferrer">관련 보도자료: "올 한해 부상·조난 당한 야생동물 2만 마리 이상 구조"</a>
+      </p>
+      <p class="section-sub">2021년 이전에는 경기 지역 센터가 남부/북부로 나뉘어 있지 않았고, 2023년에만 대구 지역 실적(20마리)이 별도로 집계되었습니다. 원인별·치료결과 항목은 연도마다 세부 분류명이 조금씩 달라(예: 방사→방생, 보호·계류) 있어 이 페이지에서는 의미가 같은 항목끼리 묶어 표시했습니다.</p>
     </div>
   </div>
 </section>
@@ -339,18 +232,19 @@
 <footer class="site-footer">
   <div class="container">
     <div>
-      <a href="gimpo.html">김포시 지도</a>
       <a href="stats.html">구조 통계</a>
+      <a href="gimpo.html">김포시 지도</a>
       <a href="about.html">소개</a>
       <a href="contact.html">문의하기</a>
       <a href="privacy.html">개인정보 처리방침</a>
       <a href="https://github.com/ChoiCollet/urbanimalist" target="_blank" rel="noopener noreferrer">GitHub</a>
     </div>
-    <p class="foot-note">© 2026 어반애니멀리스트. 학생주도 프로젝트 봉사활동으로 제작된 비영리 정보 공유 사이트입니다.</p>
+    <p class="foot-note">© 2026 어반애니멀리스트. 학생주도 프로젝트 봉사활동으로 제작된 비영리 정보 공유 사이트입니다. 통계 출처: 기후에너지환경부.</p>
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script src="js/regions.js"></script>
-<script src="js/main.js"></script>
+<script src="js/stats.js"></script>
 </body>
 </html>

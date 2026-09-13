@@ -8,6 +8,7 @@
 urbanimalist/
 ├─ index.html          # 지도1: 전국(시도) 지도
 ├─ gimpo.html           # 지도2: 김포시 읍·면·동 전용 지도 (지도1과 완전히 독립)
+├─ stats.html           # 전국 야생동물 구조·치료 통계 (2020~2025, 연도별 추이)
 ├─ about.html           # 소개 페이지
 ├─ contact.html         # 문의 페이지
 ├─ privacy.html         # 개인정보 처리방침 (애드센스 대비)
@@ -15,8 +16,10 @@ urbanimalist/
 ├─ js/regions.js        # [지도1] 시도 메타데이터 · 원인 카테고리
 ├─ js/main.js           # [지도1] 지도 렌더링, 드릴다운, 등록/검색/내보내기
 ├─ js/gimpo.js          # [지도2] 김포시 지도 전용 로직 (완전 독립 상태/저장소)
+├─ js/stats.js          # 구조 통계 페이지 로직 (Chart.js 라인 차트 + 지역별 지도)
 ├─ data/incidents.json  # [지도1] 기본 제공 자료
 ├─ data/gimpo_incidents.json  # [지도2] 기본 제공 자료 (김포시 전용)
+├─ data/wildlife_stats.json  # 연도별 구조·치료 통계 원자료 (기후에너지환경부 공표자료 가공)
 ├─ assets/maps/seoul.svg, incheon.svg, gyeonggi.svg  # [지도1] 서브맵
 ├─ assets/maps/gimpo.svg  # [지도2] 김포시 읍면동 지도
 ├─ robots.txt
