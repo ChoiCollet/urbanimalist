@@ -435,6 +435,7 @@ form.addEventListener("submit", (e) => {
 
   refreshAllEntries().then(() => {
     paintMap();
+    renderCauseChart();
     renderMyEntries();
     if (state.level === 2) renderLevel2();
     if (state.level === 3) renderLevel3(!state.sigungu);
@@ -451,6 +452,7 @@ function deleteLocalEntry(id) {
   if (state.editingId === id) cancelEdit();
   refreshAllEntries().then(() => {
     paintMap();
+    renderCauseChart();
     renderMyEntries();
     if (state.level === 2) renderLevel2();
     if (state.level === 3) renderLevel3(!state.sigungu);
@@ -500,6 +502,7 @@ document.getElementById("import-input").addEventListener("change", (e) => {
       saveLocalEntries(merged);
       refreshAllEntries().then(() => {
         paintMap();
+        renderCauseChart();
         renderMyEntries();
         alert(`${merged.length - local.length}건의 새 자료를 불러왔습니다.`);
       });
@@ -535,6 +538,54 @@ function bindMapEvents() {
 
 // ---------- 초기화 ----------
 
+// ---------- 원인 유형별 등록 현황 차트 ----------
+// 기본 동작: state.allEntries(등록된 JSON 자료)에서 자동 집계.
+// JSON 로딩에 실패해 자료가 하나도 안 잡히는 경우를 대비해, 최근 저장된 기본 자료 기준
+// 수동 집계값을 안전망으로 넣어둠 (data/incidents.json 내용이 크게 바뀌면 이 값도 갱신 권장).
+const CAUSE_CHART_FALLBACK_COUNTS = {
+  roadkill: 22,
+  habitat: 8,
+  collision: 20,
+  pollution: 0,
+  conflict: 33,
+  etc: 9,
+};
+
+let causeChartInstance = null;
+
+function renderCauseChart() {
+  const canvas = document.getElementById("cause-chart");
+  if (!canvas || typeof Chart === "undefined") return;
+
+  const counts = {};
+  CAUSES.forEach((c) => (counts[c.id] = 0));
+  state.allEntries.forEach((e) => {
+    if (counts[e.cause] !== undefined) counts[e.cause]++;
+  });
+  const total = Object.values(counts).reduce((a, b) => a + b, 0);
+  const finalCounts = total > 0 ? counts : CAUSE_CHART_FALLBACK_COUNTS;
+
+  const labels = CAUSES.map((c) => c.name);
+  const values = CAUSES.map((c) => finalCounts[c.id] || 0);
+  const colors = CAUSES.map((c) => c.color);
+
+  if (causeChartInstance) causeChartInstance.destroy();
+  causeChartInstance = new Chart(canvas, {
+    type: "bar",
+    data: { labels, datasets: [{ data: values, backgroundColor: colors, borderRadius: 4 }] },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: "#e4e0d4" } },
+        y: { grid: { display: false }, ticks: { font: { size: 11 } } },
+      },
+    },
+  });
+}
+
 async function init() {
   populateSelects();
   bindMapEvents();
@@ -542,6 +593,7 @@ async function init() {
   await refreshAllEntries();
   paintMap();
   renderMyEntries();
+  renderCauseChart();
   showLevel(1);
 
   const dateField = document.getElementById("field-date");

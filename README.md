@@ -71,3 +71,7 @@ urbanimalist/
 ## 배포
 
 Cloudflare Pages 기준: Build command 없음(비워둠), Build output directory는 `/`(저장소 루트).
+
+## 원인 유형별 차트
+
+index.html(전국 지도 옆)과 gimpo.html(지도 아래)에 원인 유형별 등록 현황을 막대그래프로 보여줍니다(Chart.js). 기본 동작은 그 페이지의 `allEntries`(로드된 JSON + 로컬 등록분)에서 자동 집계하는 것이며, JSON 로딩 자체가 실패해 자료가 0건으로 잡히는 경우에 한해 `js/main.js`의 `CAUSE_CHART_FALLBACK_COUNTS`(또는 `js/gimpo.js`의 `GIMPO_CAUSE_CHART_FALLBACK_COUNTS`) 수동 값으로 대체 표시합니다. `data/incidents.json`을 크게 갱신했다면 이 fallback 값도 함께 갱신하는 것을 권장합니다.

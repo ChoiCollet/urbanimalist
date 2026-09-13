@@ -210,6 +210,12 @@ section .section-sub { color: var(--ink-soft); margin-bottom: 24px; font-size: 0
 
 .empty-msg { color: var(--ink-soft); font-size: 0.9rem; padding: 20px 0; }
 
+.cause-chart-title { margin-top: 28px; }
+.cause-chart-box {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px; height: 260px;
+}
+
 /* ---------- Form ---------- */
 
 #register {

@@ -277,6 +277,7 @@ gimpoForm.addEventListener("submit", (e) => {
 
   refreshGimpoEntries().then(() => {
     paintGimpoMap();
+    renderGimpoCauseChart();
     document.getElementById("gimpo-entries-count").textContent = loadGimpoLocal().length;
     renderGimpoEntries();
     const statusEl = document.getElementById("gimpo-form-status");
@@ -292,6 +293,7 @@ function deleteGimpoEntry(id) {
   if (gimpoState.editingId === id) cancelGimpoEdit();
   refreshGimpoEntries().then(() => {
     paintGimpoMap();
+    renderGimpoCauseChart();
     document.getElementById("gimpo-entries-count").textContent = loadGimpoLocal().length;
     renderGimpoEntries();
   });
@@ -330,6 +332,7 @@ document.getElementById("gimpo-import-input").addEventListener("change", (e) => 
       saveGimpoLocal(merged);
       refreshGimpoEntries().then(() => {
         paintGimpoMap();
+        renderGimpoCauseChart();
         document.getElementById("gimpo-entries-count").textContent = loadGimpoLocal().length;
         renderGimpoEntries();
         alert(`${merged.length - local.length}건의 새 자료를 불러왔습니다.`);
@@ -351,6 +354,53 @@ function gimpoEscapeAttr(str) {
   return gimpoEscapeHtml(str);
 }
 
+// ---------- 원인 유형별 등록 현황 차트 ----------
+// 기본 동작: gimpoState.allEntries(등록된 JSON 자료)에서 자동 집계.
+// 자료를 못 불러오는 경우를 대비한 수동 안전망 값(현재 기본 자료 기준: 등록 건 없음 → 전부 0)
+const GIMPO_CAUSE_CHART_FALLBACK_COUNTS = {
+  roadkill: 0,
+  habitat: 0,
+  collision: 0,
+  pollution: 0,
+  conflict: 0,
+  etc: 0,
+};
+
+let gimpoCauseChartInstance = null;
+
+function renderGimpoCauseChart() {
+  const canvas = document.getElementById("gimpo-cause-chart");
+  if (!canvas || typeof Chart === "undefined") return;
+
+  const counts = {};
+  GIMPO_CAUSES.forEach((c) => (counts[c.id] = 0));
+  gimpoState.allEntries.forEach((e) => {
+    if (counts[e.cause] !== undefined) counts[e.cause]++;
+  });
+  const total = Object.values(counts).reduce((a, b) => a + b, 0);
+  const finalCounts = total > 0 ? counts : GIMPO_CAUSE_CHART_FALLBACK_COUNTS;
+
+  const labels = GIMPO_CAUSES.map((c) => c.name);
+  const values = GIMPO_CAUSES.map((c) => finalCounts[c.id] || 0);
+  const colors = GIMPO_CAUSES.map((c) => c.color);
+
+  if (gimpoCauseChartInstance) gimpoCauseChartInstance.destroy();
+  gimpoCauseChartInstance = new Chart(canvas, {
+    type: "bar",
+    data: { labels, datasets: [{ data: values, backgroundColor: colors, borderRadius: 4 }] },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: "#e4e0d4" } },
+        y: { grid: { display: false }, ticks: { font: { size: 11 } } },
+      },
+    },
+  });
+}
+
 // ---------- 초기화 ----------
 
 async function initGimpo() {
@@ -358,6 +408,7 @@ async function initGimpo() {
   bindGimpoMapEvents();
   await refreshGimpoEntries();
   paintGimpoMap();
+  renderGimpoCauseChart();
   renderGimpoBreadcrumb();
   renderGimpoEntries();
   document.getElementById("gimpo-entries-count").textContent = loadGimpoLocal().length;
