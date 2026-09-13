@@ -565,12 +565,12 @@ function bindMapEvents() {
 // JSON 로딩에 실패해 자료가 하나도 안 잡히는 경우를 대비해, 최근 저장된 기본 자료 기준
 // 수동 집계값을 안전망으로 넣어둠 (data/incidents.json 내용이 크게 바뀌면 이 값도 갱신 권장).
 const CAUSE_CHART_FALLBACK_COUNTS = {
-  roadkill: 22,
-  habitat: 8,
-  collision: 20,
+  roadkill: 13,
+  habitat: 5,
+  collision: 10,
   pollution: 0,
-  conflict: 33,
-  etc: 9,
+  conflict: 30,
+  etc: 5,
 };
 
 let causeChartInstance = null;
