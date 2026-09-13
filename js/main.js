@@ -514,6 +514,28 @@ document.getElementById("import-input").addEventListener("change", (e) => {
   reader.readAsText(file);
 });
 
+document.getElementById("reset-local-btn").addEventListener("click", () => {
+  const local = loadLocalEntries();
+  if (local.length === 0) {
+    alert("이 브라우저에 직접 등록한 자료가 없습니다.");
+    return;
+  }
+  const ok = confirm(
+    `이 브라우저에 직접 등록한 자료 ${local.length}건을 모두 삭제할까요?\n(기본 제공 자료는 그대로 유지되며, 삭제 후에는 되돌릴 수 없습니다.)`
+  );
+  if (!ok) return;
+  saveLocalEntries([]);
+  cancelEdit();
+  refreshAllEntries().then(() => {
+    paintMap();
+    renderCauseChart();
+    renderMyEntries();
+    if (state.level === 2) renderLevel2();
+    if (state.level === 3) renderLevel3(!state.sigungu);
+    alert("내가 등록한 자료를 모두 초기화했습니다.");
+  });
+});
+
 // ---------- 유틸 ----------
 
 function escapeHtml(str) {

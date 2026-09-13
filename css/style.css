@@ -253,6 +253,8 @@ textarea { min-height: 80px; resize: vertical; }
   background: var(--bg); border: 1px solid var(--border); border-radius: 999px;
   padding: 8px 16px; font-size: 0.82rem; font-weight: 700; cursor: pointer; color: var(--ink);
 }
+.io-buttons .reset-btn { color: #b64545; border-color: #e8c6c6; }
+.io-buttons .reset-btn:hover { background: #fbeeee; }
 
 /* ---------- How-to / Features / FAQ ---------- */
 
