@@ -362,7 +362,7 @@ function populateSelects() {
     `<option value="">시도 선택</option>` +
     Object.entries(PROVINCES).map(([id, p]) => `<option value="${id}">${p.name}</option>`).join("") +
     `<option value="${NATIONWIDE_ID}">전국(지역 특정 안 됨)</option>`;
-  causeSelect.innerHTML = CAUSES.map((c) => `<option value="${c.id}">${c.name}</option>`).join("");
+  causeSelect.innerHTML = getCauses().map((c) => `<option value="${c.id}">${c.name}</option>`).join("");
 }
 
 function fillForm(entry) {
@@ -558,55 +558,21 @@ function bindMapEvents() {
   });
 }
 
-// ---------- 초기화 ----------
+// ---------- 원인 유형별 등록 현황 차트 (지도1/지도2 공용 위젯 사용) ----------
 
-// ---------- 원인 유형별 등록 현황 차트 ----------
-// 기본 동작: state.allEntries(등록된 JSON 자료)에서 자동 집계.
-// JSON 로딩에 실패해 자료가 하나도 안 잡히는 경우를 대비해, 최근 저장된 기본 자료 기준
-// 수동 집계값을 안전망으로 넣어둠 (data/incidents.json 내용이 크게 바뀌면 이 값도 갱신 권장).
-const CAUSE_CHART_FALLBACK_COUNTS = {
-  roadkill: 13,
-  habitat: 5,
-  collision: 10,
-  pollution: 0,
-  conflict: 30,
-  etc: 5,
-};
-
-let causeChartInstance = null;
+const causeChartWidget = createCauseChartWidget({
+  getEntries: () => state.allEntries,
+  storagePrefix: "ua_map1",
+  canvasId: "cause-chart",
+  manualToggleId: "cause-manual-toggle",
+  manualInputsId: "cause-manual-inputs",
+});
 
 function renderCauseChart() {
-  const canvas = document.getElementById("cause-chart");
-  if (!canvas || typeof Chart === "undefined") return;
-
-  const counts = {};
-  CAUSES.forEach((c) => (counts[c.id] = 0));
-  state.allEntries.forEach((e) => {
-    if (counts[e.cause] !== undefined) counts[e.cause]++;
-  });
-  const total = Object.values(counts).reduce((a, b) => a + b, 0);
-  const finalCounts = total > 0 ? counts : CAUSE_CHART_FALLBACK_COUNTS;
-
-  const labels = CAUSES.map((c) => c.name);
-  const values = CAUSES.map((c) => finalCounts[c.id] || 0);
-  const colors = CAUSES.map((c) => c.color);
-
-  if (causeChartInstance) causeChartInstance.destroy();
-  causeChartInstance = new Chart(canvas, {
-    type: "bar",
-    data: { labels, datasets: [{ data: values, backgroundColor: colors, borderRadius: 4 }] },
-    options: {
-      indexAxis: "y",
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: "#e4e0d4" } },
-        y: { grid: { display: false }, ticks: { font: { size: 11 } } },
-      },
-    },
-  });
+  causeChartWidget.render();
 }
+
+// ---------- 초기화 ----------
 
 async function init() {
   populateSelects();

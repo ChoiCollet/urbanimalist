@@ -17,6 +17,10 @@ urbanimalist/
 ├─ js/main.js           # [지도1] 지도 렌더링, 드릴다운, 등록/검색/내보내기
 ├─ js/gimpo.js          # [지도2] 김포시 지도 전용 로직 (완전 독립 상태/저장소)
 ├─ js/stats.js          # 구조 통계 페이지 로직 (Chart.js 라인 차트 + 지역별 지도)
+├─ js/causes.js         # 원인 유형 정의 + 안전한 override 저장 (지도1·지도2·관리페이지 공용)
+├─ js/cause-chart.js    # 원인 유형별 등록 현황 차트 위젯 (지도1·지도2가 동일 구현 공유)
+├─ js/causes-admin.js   # 원인 유형 관리 페이지(causes.html) 로직
+├─ causes.html          # 원인 유형 관리 페이지 (이름/색 수정, 추가, 삭제)
 ├─ data/incidents.json  # [지도1] 기본 제공 자료
 ├─ data/gimpo_incidents.json  # [지도2] 기본 제공 자료 (김포시 전용)
 ├─ data/wildlife_stats.json  # 연도별 구조·치료 통계 원자료 (기후에너지환경부 공표자료 가공)
@@ -74,4 +78,15 @@ Cloudflare Pages 기준: Build command 없음(비워둠), Build output directory
 
 ## 원인 유형별 차트
 
-index.html(전국 지도 옆)과 gimpo.html(지도 아래)에 원인 유형별 등록 현황을 막대그래프로 보여줍니다(Chart.js). 기본 동작은 그 페이지의 `allEntries`(로드된 JSON + 로컬 등록분)에서 자동 집계하는 것이며, JSON 로딩 자체가 실패해 자료가 0건으로 잡히는 경우에 한해 `js/main.js`의 `CAUSE_CHART_FALLBACK_COUNTS`(또는 `js/gimpo.js`의 `GIMPO_CAUSE_CHART_FALLBACK_COUNTS`) 수동 값으로 대체 표시합니다. `data/incidents.json`을 크게 갱신했다면 이 fallback 값도 함께 갱신하는 것을 권장합니다.
+index.html(전국 지도 옆)과 gimpo.html(지도 옆, 지도1과 동일한 위치/크기)에 원인 유형별 등록 현황을 막대그래프로 보여줍니다(Chart.js + chartjs-plugin-datalabels로 막대 끝에 숫자 표시). `js/cause-chart.js`의 `createCauseChartWidget()` 하나를 지도1·지도2가 그대로 공유하므로 둘의 디자인·동작이 항상 동일합니다.
+
+- **기본(자동) 모드**: 그 페이지의 등록 자료(JSON + 로컬 등록분)에서 원인별 건수를 자동 집계합니다.
+- **수동 입력 모드**: 차트 위 "숫자 직접 입력" 체크박스를 켜면 자동 집계 대신 직접 입력한 숫자가 표시됩니다. JSON 자료 없이 그래프 기능만 쓰고 싶을 때 사용합니다. 지도1/지도2가 각각 다른 localStorage 키(`ua_map1_cause_manual_*` / `ua_map2_cause_manual_*`)를 쓰므로 서로 섞이지 않습니다.
+
+## 원인 유형 관리 (causes.html)
+
+지도1·지도2가 공통으로 쓰는 원인 유형(기본 6개: 로드킬·서식지파괴·충돌·환경오염·갈등포획·기타)을 이름/색 수정, 추가, 삭제할 수 있는 페이지입니다. 검색엔진에는 노출되지 않도록 `noindex` 처리되어 있습니다.
+
+- 수정 내역은 유형 id별로 개별 저장(`js/causes.js`의 override 방식)되므로, **한 유형을 고쳐도 건드리지 않은 다른 유형은 절대 영향받지 않습니다.**
+- "삭제"는 완전 삭제가 아니라 새 자료 등록 목록에서만 제외하는 것이며, 이미 그 유형으로 등록된 자료는 계속 정상적으로 표시됩니다. 사용 중(지도1 또는 지도2에 1건이라도 등록됨)인 유형은 삭제 버튼이 비활성화됩니다.
+- 이 페이지의 변경사항은 브라우저별(localStorage)로 저장됩니다. 모든 방문자에게 공통 반영하려면 `js/causes.js`의 `DEFAULT_CAUSES` 배열 자체를 수정해야 합니다.

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>원인 유형 관리 | 어반애니멀리스트</title>
+<meta name="description" content="지도1·지도2가 공통으로 사용하는 원인 유형(카테고리)을 관리하는 페이지입니다." />
+<meta name="robots" content="noindex" />
+<link rel="canonical" href="https://urbanimalist.pages.dev/causes.html" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo">🐾 어반애니멀리스트<span class="dot">.</span></a>
+    <nav class="main-nav">
+      <a href="index.html#map-tool">전국 지도</a>
+      <a href="gimpo.html">김포시 지도</a>
+      <a href="stats.html">구조 통계</a>
+      <a href="index.html#register">자료 등록</a>
+      <a href="index.html#how-to">이용 방법</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="about.html">소개</a>
+      <a href="contact.html">문의</a>
+    </nav>
+  </div>
+</header>
+
+<main class="static-page">
+  <div class="container">
+    <h1>원인 유형 관리</h1>
+    <p class="section-sub">
+      전국 지도(지도1)와 김포시 지도(지도2)가 공통으로 사용하는 원인 유형(카테고리)을 이 페이지 하나에서 관리합니다.
+      한 유형의 이름이나 색을 바꿔도 <strong>건드리지 않은 다른 유형에는 전혀 영향이 없습니다</strong> — 유형별로 변경 내역이 따로 저장되기 때문입니다.
+    </p>
+
+    <div id="causes-table" class="causes-table"></div>
+
+    <h2>새 유형 추가</h2>
+    <form id="add-cause-form" class="add-cause-form">
+      <input type="text" id="new-cause-name" placeholder="새 원인 유형 이름 (예: 기후 재해)" required />
+      <input type="color" id="new-cause-color" value="#5b7a3f" />
+      <button type="submit" class="submit-btn">추가</button>
+    </form>
+
+    <h2>초기화</h2>
+    <p class="section-sub">지금까지 수정·추가한 모든 내용을 지우고, 기본 6개 유형으로 되돌립니다. 이미 등록된 자료의 원인 태그 자체는 삭제되지 않습니다.</p>
+    <button id="reset-all-btn" class="cancel-btn" type="button">기본값으로 초기화</button>
+
+    <h2>참고</h2>
+    <div class="about-summary">
+      <p>여기서 유형을 "삭제"해도 완전히 사라지는 것이 아니라, 새 자료 등록 시 선택 목록에서만 제외됩니다. 이미 그 유형으로 등록된 자료는 지도·목록·그래프에서 계속 원래 이름과 색으로 정상 표시됩니다. 따라서 실수로 기존 자료가 깨지는 일은 없습니다.</p>
+      <p>이 페이지의 변경사항은 이 브라우저에만 저장됩니다(로컬 저장소). 팀원 전체에게 공통 반영하려면, 정한 유형 구성을 저의(개발자)에게 전달해 <code>js/causes.js</code>의 기본값 자체를 수정해 달라고 요청하시면 됩니다.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div>
+      <a href="gimpo.html">김포시 지도</a>
+      <a href="stats.html">구조 통계</a>
+      <a href="about.html">소개</a>
+      <a href="contact.html">문의하기</a>
+      <a href="privacy.html">개인정보 처리방침</a>
+      <a href="https://github.com/ChoiCollet/urbanimalist" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+    <p class="foot-note">© 2026 어반애니멀리스트. 학생주도 프로젝트 봉사활동으로 제작된 비영리 정보 공유 사이트입니다.</p>
+  </div>
+</footer>
+
+<script src="js/causes.js"></script>
+<script src="js/causes-admin.js"></script>
+</body>
+</html>

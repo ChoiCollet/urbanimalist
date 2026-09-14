@@ -1,7 +1,8 @@
 // ============================================================
 // regions.js
-// 대한민국 17개 시도 메타데이터 + 원인 카테고리 정의
+// 대한민국 17개 시도 메타데이터
 // 새로운 시도가 추가되거나 이름이 바뀌면 이 파일만 수정하면 됩니다.
+// 원인 유형(카테고리)은 js/causes.js에서 관리합니다.
 // ============================================================
 
 // SVG path id -> 한글 표기
@@ -37,26 +38,6 @@ const SUBMAP_PROVINCES = {
   incheon: "assets/maps/incheon.svg",
   gyeonggi: "assets/maps/gyeonggi.svg",
 };
-
-// 원인 카테고리 (자료 등록 시 선택, 지도 색상 필터에도 사용)
-const CAUSES = [
-  { id: "roadkill",   name: "로드킬 · 도로 사고", color: "#e2725b" },
-  { id: "habitat",    name: "서식지 파괴 · 단절", color: "#c98a3f" },
-  { id: "collision",  name: "유리창 · 구조물 충돌", color: "#7a8fae" },
-  { id: "pollution",  name: "환경오염 · 쓰레기 피해", color: "#6b8e5a" },
-  { id: "conflict",   name: "인간-동물 갈등 · 포획", color: "#9a6bae" },
-  { id: "etc",        name: "기타", color: "#8a8a8a" },
-];
-
-function causeName(id) {
-  const c = CAUSES.find((c) => c.id === id);
-  return c ? c.name : "기타";
-}
-
-function causeColor(id) {
-  const c = CAUSES.find((c) => c.id === id);
-  return c ? c.color : "#8a8a8a";
-}
 
 function provinceName(id) {
   if (id === NATIONWIDE_ID) return "전국(지역 특정 안 됨)";

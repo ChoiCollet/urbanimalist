@@ -1,27 +1,10 @@
 // ============================================================
 // gimpo.js
 // 김포시 전용 지도(지도2) - 전국 지도(지도1)와 완전히 독립된 상태/저장소 사용
+// 원인 유형 정의는 js/causes.js 공용 모듈을 그대로 사용합니다.
 // ============================================================
 
 const GIMPO_STORAGE_KEY = "ua_gimpo_local_entries_v1";
-
-const GIMPO_CAUSES = [
-  { id: "roadkill", name: "로드킬 · 도로 사고", color: "#e2725b" },
-  { id: "habitat", name: "서식지 파괴 · 단절", color: "#c98a3f" },
-  { id: "collision", name: "유리창 · 구조물 충돌", color: "#7a8fae" },
-  { id: "pollution", name: "환경오염 · 쓰레기 피해", color: "#6b8e5a" },
-  { id: "conflict", name: "인간-동물 갈등 · 포획", color: "#9a6bae" },
-  { id: "etc", name: "기타", color: "#8a8a8a" },
-];
-
-function gimpoCauseName(id) {
-  const c = GIMPO_CAUSES.find((c) => c.id === id);
-  return c ? c.name : "기타";
-}
-function gimpoCauseColor(id) {
-  const c = GIMPO_CAUSES.find((c) => c.id === id);
-  return c ? c.color : "#8a8a8a";
-}
 
 const gimpoState = {
   dong: null, // 선택된 읍면동명 (null이면 전체)
@@ -129,7 +112,7 @@ function selectDong(name) {
 // ---------- 자료 카드 ----------
 
 function gimpoEntryCardHTML(entry) {
-  const causeTag = `<span class="tag" style="--tag-color:${gimpoCauseColor(entry.cause)}">${gimpoCauseName(entry.cause)}</span>`;
+  const causeTag = `<span class="tag" style="--tag-color:${causeColor(entry.cause)}">${causeName(entry.cause)}</span>`;
   const src = entry.sourceUrl
     ? `<a href="${gimpoEscapeAttr(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">${gimpoEscapeHtml(entry.source || "출처 보기")}</a>`
     : gimpoEscapeHtml(entry.source || "출처 미기재");
@@ -208,7 +191,7 @@ function populateGimpoSelects() {
     `<option value="">읍·면·동 선택</option>` +
     dongNames.map((n) => `<option value="${n}">${n}</option>`).join("") +
     `<option value="기타/미상">기타 · 미상</option>`;
-  gimpoCauseSelect.innerHTML = GIMPO_CAUSES.map((c) => `<option value="${c.id}">${c.name}</option>`).join("");
+  gimpoCauseSelect.innerHTML = getCauses().map((c) => `<option value="${c.id}">${c.name}</option>`).join("");
 }
 
 function fillGimpoForm(entry) {
@@ -375,51 +358,18 @@ function gimpoEscapeAttr(str) {
   return gimpoEscapeHtml(str);
 }
 
-// ---------- 원인 유형별 등록 현황 차트 ----------
-// 기본 동작: gimpoState.allEntries(등록된 JSON 자료)에서 자동 집계.
-// 자료를 못 불러오는 경우를 대비한 수동 안전망 값(현재 기본 자료 기준: 등록 건 없음 → 전부 0)
-const GIMPO_CAUSE_CHART_FALLBACK_COUNTS = {
-  roadkill: 0,
-  habitat: 0,
-  collision: 0,
-  pollution: 0,
-  conflict: 0,
-  etc: 0,
-};
+// ---------- 원인 유형별 등록 현황 차트 (지도1/지도2 공용 위젯 사용) ----------
 
-let gimpoCauseChartInstance = null;
+const gimpoCauseChartWidget = createCauseChartWidget({
+  getEntries: () => gimpoState.allEntries,
+  storagePrefix: "ua_map2",
+  canvasId: "gimpo-cause-chart",
+  manualToggleId: "gimpo-cause-manual-toggle",
+  manualInputsId: "gimpo-cause-manual-inputs",
+});
 
 function renderGimpoCauseChart() {
-  const canvas = document.getElementById("gimpo-cause-chart");
-  if (!canvas || typeof Chart === "undefined") return;
-
-  const counts = {};
-  GIMPO_CAUSES.forEach((c) => (counts[c.id] = 0));
-  gimpoState.allEntries.forEach((e) => {
-    if (counts[e.cause] !== undefined) counts[e.cause]++;
-  });
-  const total = Object.values(counts).reduce((a, b) => a + b, 0);
-  const finalCounts = total > 0 ? counts : GIMPO_CAUSE_CHART_FALLBACK_COUNTS;
-
-  const labels = GIMPO_CAUSES.map((c) => c.name);
-  const values = GIMPO_CAUSES.map((c) => finalCounts[c.id] || 0);
-  const colors = GIMPO_CAUSES.map((c) => c.color);
-
-  if (gimpoCauseChartInstance) gimpoCauseChartInstance.destroy();
-  gimpoCauseChartInstance = new Chart(canvas, {
-    type: "bar",
-    data: { labels, datasets: [{ data: values, backgroundColor: colors, borderRadius: 4 }] },
-    options: {
-      indexAxis: "y",
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: "#e4e0d4" } },
-        y: { grid: { display: false }, ticks: { font: { size: 11 } } },
-      },
-    },
-  });
+  gimpoCauseChartWidget.render();
 }
 
 // ---------- 초기화 ----------

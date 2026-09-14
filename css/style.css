@@ -211,9 +211,26 @@ section .section-sub { color: var(--ink-soft); margin-bottom: 24px; font-size: 0
 .empty-msg { color: var(--ink-soft); font-size: 0.9rem; padding: 20px 0; }
 
 .cause-chart-title { margin-top: 28px; }
+.cause-chart-controls {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;
+}
+.manual-toggle { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--ink-soft); cursor: pointer; }
+.manual-toggle input { cursor: pointer; }
+.manage-link { font-size: 0.82rem; color: var(--primary-dark); font-weight: 700; text-decoration: none; }
+.manage-link:hover { text-decoration: underline; }
 .cause-chart-box {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
   padding: 16px; height: 260px;
+}
+.cause-manual-inputs {
+  margin-top: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 12px 14px; display: flex; flex-direction: column; gap: 8px;
+}
+.manual-input-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.manual-input-label { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; }
+.manual-input-label i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; flex-shrink: 0; }
+.manual-input-row input {
+  width: 80px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; text-align: right;
 }
 
 /* ---------- Form ---------- */
@@ -308,6 +325,33 @@ footer.site-footer .foot-note { margin-top: 14px; font-size: 0.78rem; color: #a9
 .rank-count { font-weight: 800; color: var(--primary-dark); }
 
 /* ---------- Static pages ---------- */
+
+.causes-table { display: flex; flex-direction: column; gap: 10px; margin: 20px 0 30px; }
+.cause-row {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px;
+}
+.cause-color-input { width: 36px; height: 36px; border: none; border-radius: 8px; padding: 0; cursor: pointer; }
+.cause-name-input { flex: 1; min-width: 160px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; }
+.tag-basic { font-size: 0.7rem; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: var(--bg); color: var(--ink-soft); }
+.tag-basic.tag-custom { background: #eaf2ea; color: var(--primary-dark); }
+.cause-usage { font-size: 0.78rem; color: var(--ink-soft); white-space: nowrap; }
+.cause-save-btn {
+  background: var(--primary); color: #fff; border: none; padding: 7px 14px; border-radius: 999px;
+  font-size: 0.8rem; font-weight: 700; cursor: pointer;
+}
+.cause-save-btn:hover { background: var(--primary-dark); }
+.cause-del-btn {
+  background: none; border: 1px solid #e8c6c6; color: #b64545; padding: 7px 14px; border-radius: 999px;
+  font-size: 0.8rem; font-weight: 700; cursor: pointer;
+}
+.cause-del-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.add-cause-form { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 16px 0 30px; }
+.add-cause-form input[type="text"] {
+  flex: 1; min-width: 220px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem;
+}
+.add-cause-form input[type="color"] { width: 44px; height: 40px; border: none; border-radius: 8px; cursor: pointer; }
 
 .static-page { padding: 50px 0 70px; }
 .static-page h1 { color: var(--primary-dark); }
