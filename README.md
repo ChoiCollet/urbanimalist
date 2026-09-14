@@ -90,3 +90,43 @@ index.html(전국 지도 옆)과 gimpo.html(지도 옆, 지도1과 동일한 위
 - 수정 내역은 유형 id별로 개별 저장(`js/causes.js`의 override 방식)되므로, **한 유형을 고쳐도 건드리지 않은 다른 유형은 절대 영향받지 않습니다.**
 - "삭제"는 완전 삭제가 아니라 새 자료 등록 목록에서만 제외하는 것이며, 이미 그 유형으로 등록된 자료는 계속 정상적으로 표시됩니다. 사용 중(지도1 또는 지도2에 1건이라도 등록됨)인 유형은 삭제 버튼이 비활성화됩니다.
 - 이 페이지의 변경사항은 브라우저별(localStorage)로 저장됩니다. 모든 방문자에게 공통 반영하려면 `js/causes.js`의 `DEFAULT_CAUSES` 배열 자체를 수정해야 합니다.
+
+## 서버 자료 저장 (Cloudflare D1 + Pages Functions)
+
+2026-09-14 업데이트부터 자료 등록은 더 이상 브라우저 localStorage/JSON 내보내기 방식이 아니라, **Cloudflare D1(무료 SQL DB)에 저장되는 실제 서버 API**를 통해 이루어집니다. 팀원 전체가 같은 데이터를 실시간으로 보고, 팀 공유 비밀번호로만 등록·수정·삭제할 수 있습니다.
+
+`data/incidents.json`, `data/gimpo_incidents.json`은 더 이상 사이트에서 직접 불러오지 않습니다(마이그레이션 시점 백업용으로만 보관).
+
+### 처음 한 번만 해야 하는 설정 (Cloudflare 대시보드)
+
+1. **D1 데이터베이스 생성**
+   Cloudflare 대시보드 → Workers & Pages → D1 SQL Database → Create Database. 이름은 자유롭게(예: `urbanimalist-db`).
+
+2. **스키마 + 기존 자료 업로드**
+   방금 만든 D1 데이터베이스 → Console 탭 → 저장소 루트의 `schema.sql` 파일 내용을 전부 복사해서 붙여넣고 실행. (테이블 생성 + 기존 63건이 한 번에 들어갑니다.)
+
+3. **Pages 프로젝트에 D1 바인딩 연결**
+   Workers & Pages → `urbanimalist` 프로젝트 → Settings → Functions → D1 database bindings → Add binding.
+   - Variable name: **`DB`** (반드시 이 이름이어야 함 - functions 코드에서 `env.DB`로 참조)
+   - D1 database: 1번에서 만든 데이터베이스 선택
+
+4. **팀 비밀번호 환경 변수 등록**
+   같은 프로젝트 → Settings → Environment variables → Add variable.
+   - Variable name: **`TEAM_PASSWORD`**
+   - Value: 팀이 쓸 비밀번호 (예: `urbanimalist2026`)
+   - "Encrypt" 체크(비밀 값으로 저장) 권장
+   - Production과 Preview 환경 둘 다에 추가
+
+5. 저장 후 **재배포**(Retry deployment 또는 새 커밋 푸시) 한 번 해야 바인딩이 적용됩니다.
+
+### API 엔드포인트
+
+| 메서드 | 경로 | 설명 | 비밀번호 |
+|---|---|---|---|
+| GET | `/api/incidents` | 전국 지도 자료 전체 조회 | 불필요 |
+| POST | `/api/incidents` | 전국 지도 자료 등록 | 필요 |
+| PUT | `/api/incidents/:id` | 전국 지도 자료 수정 | 필요 |
+| DELETE | `/api/incidents/:id` | 전국 지도 자료 삭제 | 필요 |
+| GET/POST/PUT/DELETE | `/api/gimpo-incidents`, `/api/gimpo-incidents/:id` | 김포시 지도용, 위와 동일 구조 | 위와 동일 |
+
+프론트엔드(`js/main.js`, `js/gimpo.js`)는 자료 등록·수정·삭제 시 팀 비밀번호를 물어보고(브라우저 탭 세션에만 임시 저장), 위 API로 요청을 보냅니다.

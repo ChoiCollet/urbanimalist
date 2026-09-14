@@ -141,7 +141,7 @@ text.sgg-label {
 <section id="gimpo-register">
   <div class="container">
     <h2>김포시 자료 등록하기</h2>
-    <p class="section-sub">이 폼으로 등록한 자료는 전국 지도(지도1)와 완전히 분리되어, 김포시 지도에만 반영됩니다. 이 브라우저에 저장되며, 'JSON 내보내기'로 파일을 만들어 팀원과 합칠 수 있습니다.</p>
+    <p class="section-sub">이 폼으로 등록한 자료는 전국 지도(지도1)와 완전히 분리되어, 김포시 지도에만 반영됩니다. 서버에 저장되어 팀원 모두에게 바로 반영됩니다. 등록·수정·삭제에는 팀 비밀번호가 필요합니다.</p>
 
     <form id="gimpo-entry-form">
       <div class="form-grid">
@@ -177,17 +177,17 @@ text.sgg-label {
       <button class="submit-btn" id="gimpo-form-submit-btn" type="submit">자료 등록</button>
       <button class="cancel-btn" id="gimpo-form-cancel-btn" type="button" hidden>수정 취소</button>
       <span id="gimpo-form-status"></span>
+      <p class="password-hint">* 저장 버튼을 누르면 팀 비밀번호를 묻는 창이 뜹니다. 전국 지도와 같은 비밀번호를 씁니다.</p>
     </form>
 
     <div class="my-entries-header">
-      <h3>등록된 김포시 자료 (<span id="gimpo-entries-count">0</span>)</h3>
+      <h3>전체 등록 자료 백업</h3>
       <div class="io-buttons">
-        <button id="gimpo-export-btn" type="button">JSON 내보내기</button>
-        <label>JSON 불러오기<input id="gimpo-import-input" type="file" accept="application/json" hidden /></label>
-        <button id="gimpo-reset-local-btn" type="button" class="reset-btn">내 등록 자료 초기화</button>
+        <button id="gimpo-export-btn" type="button">JSON으로 내려받기</button>
       </div>
     </div>
   </div>
+
 </section>
 
 <section id="gimpo-how-to">

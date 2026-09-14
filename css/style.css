@@ -263,6 +263,7 @@ textarea { min-height: 80px; resize: vertical; }
   border-radius: 999px; font-weight: 700; cursor: pointer; margin-top: 6px; margin-left: 8px;
 }
 #form-status { margin-left: 12px; font-size: 0.85rem; color: var(--primary-dark); font-weight: 700; }
+.password-hint { margin: 8px 0 0; font-size: 0.78rem; color: var(--ink-soft); }
 
 .my-entries-header { display: flex; align-items: center; justify-content: space-between; margin: 32px 0 12px; }
 .io-buttons { display: flex; gap: 8px; }

@@ -13,24 +13,11 @@ async function fetchJsonSafe(url) {
   }
 }
 
-function loadLocalSafe(key) {
-  try {
-    return JSON.parse(localStorage.getItem(key)) || [];
-  } catch (e) {
-    return [];
-  }
-}
-
 async function computeUsageCounts() {
-  const [seed1, seed2] = await Promise.all([
-    fetchJsonSafe("data/incidents.json"),
-    fetchJsonSafe("data/gimpo_incidents.json"),
+  const [map1Entries, map2Entries] = await Promise.all([
+    fetchJsonSafe("/api/incidents"),
+    fetchJsonSafe("/api/gimpo-incidents"),
   ]);
-  const local1 = loadLocalSafe("ua_local_entries_v1");
-  const local2 = loadLocalSafe("ua_gimpo_local_entries_v1");
-
-  const map1Entries = [...seed1, ...local1];
-  const map2Entries = [...seed2, ...local2];
 
   const counts = {}; // id -> { map1, map2 }
   const add = (list, key) => {

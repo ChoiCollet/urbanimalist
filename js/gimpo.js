@@ -1,10 +1,11 @@
 // ============================================================
 // gimpo.js
-// 김포시 전용 지도(지도2) - 전국 지도(지도1)와 완전히 독립된 상태/저장소 사용
+// 김포시 전용 지도(지도2) - 전국 지도(지도1)와 완전히 독립된 서버 자료(API) 사용
 // 원인 유형 정의는 js/causes.js 공용 모듈을 그대로 사용합니다.
 // ============================================================
 
-const GIMPO_STORAGE_KEY = "ua_gimpo_local_entries_v1";
+const GIMPO_API_BASE = "/api/gimpo-incidents";
+const GIMPO_PASSWORD_SESSION_KEY = "ua_team_password"; // 지도1과 같은 팀 비밀번호를 공유(세션 저장)
 
 const gimpoState = {
   dong: null, // 선택된 읍면동명 (null이면 전체)
@@ -13,36 +14,33 @@ const gimpoState = {
   editingId: null,
 };
 
-// ---------- 데이터 로드 / 저장 ----------
+// ---------- 팀 비밀번호 ----------
 
-async function loadGimpoSeed() {
-  try {
-    const res = await fetch("data/gimpo_incidents.json", { cache: "no-cache" });
-    if (!res.ok) throw new Error("seed fetch failed");
-    return await res.json();
-  } catch (e) {
-    console.error("김포시 기본 데이터를 불러오지 못했습니다.", e);
-    return [];
-  }
+function gimpoGetSessionPassword() {
+  return sessionStorage.getItem(GIMPO_PASSWORD_SESSION_KEY) || "";
+}
+function gimpoSetSessionPassword(pw) {
+  sessionStorage.setItem(GIMPO_PASSWORD_SESSION_KEY, pw);
+}
+function gimpoAskPassword(promptMessage) {
+  const cached = gimpoGetSessionPassword();
+  if (cached) return cached;
+  const pw = prompt(promptMessage || "팀 비밀번호를 입력하세요.");
+  if (pw) gimpoSetSessionPassword(pw);
+  return pw || "";
 }
 
-function loadGimpoLocal() {
-  try {
-    const raw = localStorage.getItem(GIMPO_STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch (e) {
-    return [];
-  }
-}
-
-function saveGimpoLocal(entries) {
-  localStorage.setItem(GIMPO_STORAGE_KEY, JSON.stringify(entries));
-}
+// ---------- 데이터 로드 (서버 API) ----------
 
 async function refreshGimpoEntries() {
-  const seed = await loadGimpoSeed();
-  const local = loadGimpoLocal();
-  gimpoState.allEntries = [...seed, ...local];
+  try {
+    const res = await fetch(GIMPO_API_BASE, { cache: "no-store" });
+    if (!res.ok) throw new Error("fetch failed");
+    gimpoState.allEntries = await res.json();
+  } catch (e) {
+    console.error("김포시 자료를 불러오지 못했습니다.", e);
+    gimpoState.allEntries = [];
+  }
 }
 
 // ---------- 집계 ----------
@@ -116,10 +114,7 @@ function gimpoEntryCardHTML(entry) {
   const src = entry.sourceUrl
     ? `<a href="${gimpoEscapeAttr(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">${gimpoEscapeHtml(entry.source || "출처 보기")}</a>`
     : gimpoEscapeHtml(entry.source || "출처 미기재");
-  const isLocal = String(entry.id).startsWith("local-");
-  const actions = isLocal
-    ? `<button class="entry-edit" data-id="${entry.id}">수정</button><button class="entry-del" data-id="${entry.id}">삭제</button>`
-    : "";
+  const actions = `<button class="entry-edit" data-id="${entry.id}">수정</button><button class="entry-del" data-id="${entry.id}">삭제</button>`;
   return `
     <article class="entry-card">
       <div class="entry-top">
@@ -205,7 +200,7 @@ function fillGimpoForm(entry) {
 }
 
 function startGimpoEdit(id) {
-  const entry = loadGimpoLocal().find((e) => e.id === id);
+  const entry = gimpoState.allEntries.find((e) => e.id === id);
   if (!entry) return;
   gimpoState.editingId = id;
   fillGimpoForm(entry);
@@ -225,7 +220,19 @@ function cancelGimpoEdit() {
 
 gimpoCancelBtn.addEventListener("click", cancelGimpoEdit);
 
-gimpoForm.addEventListener("submit", (e) => {
+async function afterGimpoMutation(statusMsg) {
+  await refreshGimpoEntries();
+  paintGimpoMap();
+  renderGimpoCauseChart();
+  renderGimpoEntries();
+  if (statusMsg) {
+    const statusEl = document.getElementById("gimpo-form-status");
+    statusEl.textContent = statusMsg;
+    setTimeout(() => (statusEl.textContent = ""), 4000);
+  }
+}
+
+gimpoForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const fd = new FormData(gimpoForm);
   const dong = fd.get("dong");
@@ -234,7 +241,12 @@ gimpoForm.addEventListener("submit", (e) => {
     alert("읍·면·동과 제목은 필수 입력 항목입니다.");
     return;
   }
+
+  const password = gimpoAskPassword("자료를 등록/수정하려면 팀 비밀번호를 입력하세요.");
+  if (!password) return;
+
   const payload = {
+    password,
     dong,
     cause: fd.get("cause"),
     title,
@@ -244,45 +256,58 @@ gimpoForm.addEventListener("submit", (e) => {
     date: fd.get("date") || "",
   };
 
-  const local = loadGimpoLocal();
-  let statusMsg = "등록되었습니다. 이 브라우저에 저장되며, 지도에 즉시 반영됩니다.";
+  const isEdit = !!gimpoState.editingId;
+  const url = isEdit ? `${GIMPO_API_BASE}/${encodeURIComponent(gimpoState.editingId)}` : GIMPO_API_BASE;
+  const method = isEdit ? "PUT" : "POST";
 
-  if (gimpoState.editingId) {
-    const idx = local.findIndex((e) => e.id === gimpoState.editingId);
-    if (idx !== -1) local[idx] = { ...local[idx], ...payload };
-    statusMsg = "수정되었습니다.";
-  } else {
-    local.push({ id: "local-" + Date.now() + "-" + Math.floor(Math.random() * 1000), ...payload });
+  gimpoSubmitBtn.disabled = true;
+  try {
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (res.status === 401) {
+      alert("팀 비밀번호가 올바르지 않습니다.");
+      gimpoSetSessionPassword("");
+      return;
+    }
+    if (!res.ok) throw new Error("요청 실패");
+
+    cancelGimpoEdit();
+    await afterGimpoMutation(isEdit ? "수정되었습니다." : "등록되었습니다. 서버에 저장되어 팀원 모두에게 바로 반영됩니다.");
+  } catch (err) {
+    alert("저장 중 오류가 발생했습니다: " + err.message);
+  } finally {
+    gimpoSubmitBtn.disabled = false;
   }
-
-  saveGimpoLocal(local);
-  cancelGimpoEdit();
-
-  refreshGimpoEntries().then(() => {
-    paintGimpoMap();
-    renderGimpoCauseChart();
-    document.getElementById("gimpo-entries-count").textContent = loadGimpoLocal().length;
-    renderGimpoEntries();
-    const statusEl = document.getElementById("gimpo-form-status");
-    statusEl.textContent = statusMsg;
-    setTimeout(() => (statusEl.textContent = ""), 4000);
-  });
 });
 
-function deleteGimpoEntry(id) {
-  if (!confirm("이 자료를 삭제할까요?")) return;
-  const local = loadGimpoLocal().filter((e) => e.id !== id);
-  saveGimpoLocal(local);
-  if (gimpoState.editingId === id) cancelGimpoEdit();
-  refreshGimpoEntries().then(() => {
-    paintGimpoMap();
-    renderGimpoCauseChart();
-    document.getElementById("gimpo-entries-count").textContent = loadGimpoLocal().length;
-    renderGimpoEntries();
-  });
+async function deleteGimpoEntry(id) {
+  if (!confirm("이 자료를 삭제할까요? (팀원 모두에게 반영되며 되돌릴 수 없습니다)")) return;
+  const password = gimpoAskPassword("자료를 삭제하려면 팀 비밀번호를 입력하세요.");
+  if (!password) return;
+
+  try {
+    const res = await fetch(`${GIMPO_API_BASE}/${encodeURIComponent(id)}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+    if (res.status === 401) {
+      alert("팀 비밀번호가 올바르지 않습니다.");
+      gimpoSetSessionPassword("");
+      return;
+    }
+    if (!res.ok) throw new Error("요청 실패");
+    if (gimpoState.editingId === id) cancelGimpoEdit();
+    await afterGimpoMutation();
+  } catch (err) {
+    alert("삭제 중 오류가 발생했습니다: " + err.message);
+  }
 }
 
-// ---------- 내보내기 / 불러오기 ----------
+// ---------- 전체 자료 백업 다운로드 ----------
 
 document.getElementById("gimpo-export-btn").addEventListener("click", () => {
   const blob = new Blob([JSON.stringify(gimpoState.allEntries, null, 2)], { type: "application/json" });
@@ -293,60 +318,6 @@ document.getElementById("gimpo-export-btn").addEventListener("click", () => {
   a.download = `urbanimalist-gimpo-data-${today}.json`;
   a.click();
   URL.revokeObjectURL(url);
-});
-
-document.getElementById("gimpo-import-input").addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    try {
-      const imported = JSON.parse(reader.result);
-      if (!Array.isArray(imported)) throw new Error("배열 형식이 아닙니다.");
-      const local = loadGimpoLocal();
-      const existingIds = new Set(local.map((e) => e.id));
-      const merged = [...local];
-      imported.forEach((e) => {
-        if (!existingIds.has(e.id) && String(e.id).startsWith("local-")) {
-          merged.push(e);
-          existingIds.add(e.id);
-        }
-      });
-      saveGimpoLocal(merged);
-      refreshGimpoEntries().then(() => {
-        paintGimpoMap();
-        renderGimpoCauseChart();
-        document.getElementById("gimpo-entries-count").textContent = loadGimpoLocal().length;
-        renderGimpoEntries();
-        alert(`${merged.length - local.length}건의 새 자료를 불러왔습니다.`);
-      });
-    } catch (err) {
-      alert("파일을 읽는 중 오류가 발생했습니다: " + err.message);
-    }
-    e.target.value = "";
-  };
-  reader.readAsText(file);
-});
-
-document.getElementById("gimpo-reset-local-btn").addEventListener("click", () => {
-  const local = loadGimpoLocal();
-  if (local.length === 0) {
-    alert("이 브라우저에 직접 등록한 김포시 자료가 없습니다.");
-    return;
-  }
-  const ok = confirm(
-    `이 브라우저에 직접 등록한 김포시 자료 ${local.length}건을 모두 삭제할까요?\n(기본 제공 자료는 그대로 유지되며, 삭제 후에는 되돌릴 수 없습니다.)`
-  );
-  if (!ok) return;
-  saveGimpoLocal([]);
-  if (gimpoState.editingId) cancelGimpoEdit();
-  refreshGimpoEntries().then(() => {
-    paintGimpoMap();
-    renderGimpoCauseChart();
-    document.getElementById("gimpo-entries-count").textContent = loadGimpoLocal().length;
-    renderGimpoEntries();
-    alert("내가 등록한 김포시 자료를 모두 초기화했습니다.");
-  });
 });
 
 // ---------- 유틸 ----------
@@ -382,7 +353,6 @@ async function initGimpo() {
   renderGimpoCauseChart();
   renderGimpoBreadcrumb();
   renderGimpoEntries();
-  document.getElementById("gimpo-entries-count").textContent = loadGimpoLocal().length;
 
   const dateField = document.getElementById("gimpo-field-date");
   if (dateField) dateField.value = new Date().toISOString().slice(0, 10);

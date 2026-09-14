@@ -1,9 +1,11 @@
 // ============================================================
 // main.js
 // 어반애니멀리스트 - 지도 상호작용 + 자료 등록/조회/수정/삭제 로직
+// 자료는 Cloudflare Pages Functions + D1을 통해 서버에 저장됩니다(팀 공유).
 // ============================================================
 
-const STORAGE_KEY = "ua_local_entries_v1";
+const API_BASE = "/api/incidents";
+const PASSWORD_SESSION_KEY = "ua_team_password"; // sessionStorage: 탭을 닫으면 사라짐
 const submapCache = {}; // provinceId -> svg 문자열 캐시
 
 const state = {
@@ -11,40 +13,37 @@ const state = {
   province: null, // 선택된 시도 id
   sigungu: null, // 선택된 시군구명 (문자열) 또는 null(해당 시도 전체)
   search: "",
-  allEntries: [], // seed + local 병합본
-  editingId: null, // 현재 수정 중인 local 자료 id (없으면 null)
+  allEntries: [], // 서버(D1)에서 불러온 전체 자료
+  editingId: null, // 현재 수정 중인 자료 id (없으면 null)
 };
 
-// ---------- 데이터 로드 / 저장 ----------
+// ---------- 팀 비밀번호 ----------
 
-async function loadSeedEntries() {
-  try {
-    const res = await fetch("data/incidents.json", { cache: "no-store" });
-    if (!res.ok) throw new Error("seed fetch failed");
-    return await res.json();
-  } catch (e) {
-    console.error("기본 데이터를 불러오지 못했습니다.", e);
-    return [];
-  }
+function getSessionPassword() {
+  return sessionStorage.getItem(PASSWORD_SESSION_KEY) || "";
+}
+function setSessionPassword(pw) {
+  sessionStorage.setItem(PASSWORD_SESSION_KEY, pw);
+}
+function askPassword(promptMessage) {
+  const cached = getSessionPassword();
+  if (cached) return cached;
+  const pw = prompt(promptMessage || "팀 비밀번호를 입력하세요.");
+  if (pw) setSessionPassword(pw);
+  return pw || "";
 }
 
-function loadLocalEntries() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch (e) {
-    return [];
-  }
-}
-
-function saveLocalEntries(entries) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-}
+// ---------- 데이터 로드 (서버 API) ----------
 
 async function refreshAllEntries() {
-  const seed = await loadSeedEntries();
-  const local = loadLocalEntries();
-  state.allEntries = [...seed, ...local];
+  try {
+    const res = await fetch(API_BASE, { cache: "no-store" });
+    if (!res.ok) throw new Error("fetch failed");
+    state.allEntries = await res.json();
+  } catch (e) {
+    console.error("자료를 불러오지 못했습니다.", e);
+    state.allEntries = [];
+  }
 }
 
 // ---------- 집계 ----------
@@ -52,6 +51,7 @@ async function refreshAllEntries() {
 function countByProvince(provinceId) {
   return state.allEntries.filter((e) => e.sido && e.sido.includes(provinceId)).length;
 }
+
 
 function entriesForProvince(provinceId) {
   return state.allEntries.filter((e) => e.sido && e.sido.includes(provinceId));
@@ -246,11 +246,8 @@ function entryCardHTML(entry) {
   const src = entry.sourceUrl
     ? `<a href="${escapeAttr(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(entry.source || "출처 보기")}</a>`
     : escapeHtml(entry.source || "출처 미기재");
-  const isLocal = String(entry.id).startsWith("local-");
-  const actions = isLocal
-    ? `<button class="entry-edit" data-id="${entry.id}" title="수정">수정</button>
-       <button class="entry-del" data-id="${entry.id}" title="삭제">삭제</button>`
-    : "";
+  const actions = `<button class="entry-edit" data-id="${entry.id}" title="수정">수정</button>
+       <button class="entry-del" data-id="${entry.id}" title="삭제">삭제</button>`;
   return `
     <article class="entry-card">
       <div class="entry-top">
@@ -269,7 +266,7 @@ function entryCardHTML(entry) {
 
 function bindEntryActions(container) {
   container.querySelectorAll(".entry-del").forEach((btn) => {
-    btn.addEventListener("click", () => deleteLocalEntry(btn.dataset.id));
+    btn.addEventListener("click", () => deleteEntry(btn.dataset.id));
   });
   container.querySelectorAll(".entry-edit").forEach((btn) => {
     btn.addEventListener("click", () => startEdit(btn.dataset.id));
@@ -377,7 +374,7 @@ function fillForm(entry) {
 }
 
 function startEdit(id) {
-  const entry = loadLocalEntries().find((e) => e.id === id);
+  const entry = state.allEntries.find((e) => e.id === id);
   if (!entry) return;
   state.editingId = id;
   fillForm(entry);
@@ -397,7 +394,20 @@ function cancelEdit() {
 
 cancelEditBtn.addEventListener("click", cancelEdit);
 
-form.addEventListener("submit", (e) => {
+async function afterMutation(statusMsg) {
+  await refreshAllEntries();
+  paintMap();
+  renderCauseChart();
+  if (state.level === 2) renderLevel2();
+  if (state.level === 3) renderLevel3(!state.sigungu);
+  if (statusMsg) {
+    const statusEl = document.getElementById("form-status");
+    statusEl.textContent = statusMsg;
+    setTimeout(() => (statusEl.textContent = ""), 4000);
+  }
+}
+
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const fd = new FormData(form);
   const sido = fd.get("sido");
@@ -406,7 +416,12 @@ form.addEventListener("submit", (e) => {
     alert("시도와 제목은 필수 입력 항목입니다.");
     return;
   }
+
+  const password = askPassword("자료를 등록/수정하려면 팀 비밀번호를 입력하세요.");
+  if (!password) return;
+
   const payload = {
+    password,
     sido: [sido],
     sigungu: (fd.get("sigungu") || "").trim(),
     cause: fd.get("cause"),
@@ -417,59 +432,58 @@ form.addEventListener("submit", (e) => {
     date: fd.get("date") || "",
   };
 
-  const local = loadLocalEntries();
-  let statusMsg = "등록되었습니다. 이 브라우저에 저장되며, 지도에 즉시 반영됩니다.";
+  const isEdit = !!state.editingId;
+  const url = isEdit ? `${API_BASE}/${encodeURIComponent(state.editingId)}` : API_BASE;
+  const method = isEdit ? "PUT" : "POST";
 
-  if (state.editingId) {
-    const idx = local.findIndex((e) => e.id === state.editingId);
-    if (idx !== -1) {
-      local[idx] = { ...local[idx], ...payload };
+  submitBtn.disabled = true;
+  try {
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (res.status === 401) {
+      alert("팀 비밀번호가 올바르지 않습니다.");
+      setSessionPassword("");
+      return;
     }
-    statusMsg = "수정되었습니다.";
-  } else {
-    local.push({ id: "local-" + Date.now() + "-" + Math.floor(Math.random() * 1000), ...payload });
+    if (!res.ok) throw new Error("요청 실패");
+
+    cancelEdit();
+    await afterMutation(isEdit ? "수정되었습니다." : "등록되었습니다. 서버에 저장되어 팀원 모두에게 바로 반영됩니다.");
+  } catch (err) {
+    alert("저장 중 오류가 발생했습니다: " + err.message);
+  } finally {
+    submitBtn.disabled = false;
   }
-
-  saveLocalEntries(local);
-  cancelEdit();
-
-  refreshAllEntries().then(() => {
-    paintMap();
-    renderCauseChart();
-    renderMyEntries();
-    if (state.level === 2) renderLevel2();
-    if (state.level === 3) renderLevel3(!state.sigungu);
-    const statusEl = document.getElementById("form-status");
-    statusEl.textContent = statusMsg;
-    setTimeout(() => (statusEl.textContent = ""), 4000);
-  });
 });
 
-function deleteLocalEntry(id) {
-  if (!confirm("이 자료를 삭제할까요?")) return;
-  const local = loadLocalEntries().filter((e) => e.id !== id);
-  saveLocalEntries(local);
-  if (state.editingId === id) cancelEdit();
-  refreshAllEntries().then(() => {
-    paintMap();
-    renderCauseChart();
-    renderMyEntries();
-    if (state.level === 2) renderLevel2();
-    if (state.level === 3) renderLevel3(!state.sigungu);
-  });
+async function deleteEntry(id) {
+  if (!confirm("이 자료를 삭제할까요? (팀원 모두에게 반영되며 되돌릴 수 없습니다)")) return;
+  const password = askPassword("자료를 삭제하려면 팀 비밀번호를 입력하세요.");
+  if (!password) return;
+
+  try {
+    const res = await fetch(`${API_BASE}/${encodeURIComponent(id)}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+    if (res.status === 401) {
+      alert("팀 비밀번호가 올바르지 않습니다.");
+      setSessionPassword("");
+      return;
+    }
+    if (!res.ok) throw new Error("요청 실패");
+    if (state.editingId === id) cancelEdit();
+    await afterMutation();
+  } catch (err) {
+    alert("삭제 중 오류가 발생했습니다: " + err.message);
+  }
 }
 
-function renderMyEntries() {
-  const wrap = document.getElementById("my-entries-list");
-  const local = loadLocalEntries();
-  wrap.innerHTML = local.length
-    ? local.map(entryCardHTML).join("")
-    : `<p class="empty-msg">아직 이 브라우저에서 등록한 자료가 없습니다.</p>`;
-  bindEntryActions(wrap);
-  document.getElementById("my-entries-count").textContent = local.length;
-}
-
-// ---------- 내보내기 / 불러오기 ----------
+// ---------- 전체 자료 백업 다운로드 ----------
 
 document.getElementById("export-btn").addEventListener("click", () => {
   const blob = new Blob([JSON.stringify(state.allEntries, null, 2)], { type: "application/json" });
@@ -480,60 +494,6 @@ document.getElementById("export-btn").addEventListener("click", () => {
   a.download = `urbanimalist-data-${today}.json`;
   a.click();
   URL.revokeObjectURL(url);
-});
-
-document.getElementById("import-input").addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    try {
-      const imported = JSON.parse(reader.result);
-      if (!Array.isArray(imported)) throw new Error("배열 형식이 아닙니다.");
-      const local = loadLocalEntries();
-      const existingIds = new Set([...local.map((e) => e.id)]);
-      const merged = [...local];
-      imported.forEach((e) => {
-        if (!existingIds.has(e.id) && String(e.id).startsWith("local-")) {
-          merged.push(e);
-          existingIds.add(e.id);
-        }
-      });
-      saveLocalEntries(merged);
-      refreshAllEntries().then(() => {
-        paintMap();
-        renderCauseChart();
-        renderMyEntries();
-        alert(`${merged.length - local.length}건의 새 자료를 불러왔습니다.`);
-      });
-    } catch (err) {
-      alert("파일을 읽는 중 오류가 발생했습니다: " + err.message);
-    }
-    e.target.value = "";
-  };
-  reader.readAsText(file);
-});
-
-document.getElementById("reset-local-btn").addEventListener("click", () => {
-  const local = loadLocalEntries();
-  if (local.length === 0) {
-    alert("이 브라우저에 직접 등록한 자료가 없습니다.");
-    return;
-  }
-  const ok = confirm(
-    `이 브라우저에 직접 등록한 자료 ${local.length}건을 모두 삭제할까요?\n(기본 제공 자료는 그대로 유지되며, 삭제 후에는 되돌릴 수 없습니다.)`
-  );
-  if (!ok) return;
-  saveLocalEntries([]);
-  cancelEdit();
-  refreshAllEntries().then(() => {
-    paintMap();
-    renderCauseChart();
-    renderMyEntries();
-    if (state.level === 2) renderLevel2();
-    if (state.level === 3) renderLevel3(!state.sigungu);
-    alert("내가 등록한 자료를 모두 초기화했습니다.");
-  });
 });
 
 // ---------- 유틸 ----------
@@ -580,7 +540,6 @@ async function init() {
   document.getElementById("nationwide-btn").addEventListener("click", goNationwide);
   await refreshAllEntries();
   paintMap();
-  renderMyEntries();
   renderCauseChart();
   showLevel(1);
 
