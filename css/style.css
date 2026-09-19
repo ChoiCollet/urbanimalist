@@ -94,7 +94,9 @@ section .section-sub { color: var(--ink-soft); margin-bottom: 24px; font-size: 0
 
 /* ---------- Map tool ---------- */
 
-#map-tool { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.band-surface, #map-tool { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+/* 흰 배경 구간 안에서는 카드 요소를 살짝 다른 톤(베이지)으로 띄워 구분되게 함 */
+.band-surface .chart-box, .band-surface .cause-chart-box { background: var(--bg); }
 
 .tool-header {
   display: flex;
