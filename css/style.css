@@ -361,6 +361,55 @@ footer.site-footer .foot-note { margin-top: 14px; font-size: 0.78rem; color: #a9
 .log-rolled-tag { margin-left: auto; font-size: 0.78rem; color: var(--ink-soft); font-weight: 700; }
 .log-row-title { font-size: 0.92rem; font-weight: 600; }
 .log-row-region { font-weight: 400; color: var(--ink-soft); }
+.log-del-btn {
+  background: none; border: 1px solid var(--border); color: var(--ink-soft);
+  border-radius: 999px; padding: 5px 12px; font-size: 0.76rem; font-weight: 700; cursor: pointer;
+}
+.log-del-btn:hover { border-color: #b64545; color: #b64545; }
+
+.log-calendar-box {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px 18px; margin-bottom: 16px; max-width: 420px;
+}
+.log-calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.log-cal-title { font-weight: 800; color: var(--primary-dark); }
+.log-cal-nav {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 999px; width: 28px; height: 28px;
+  cursor: pointer; font-size: 1rem; color: var(--ink-soft);
+}
+.log-calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.log-cal-weekday { text-align: center; font-size: 0.72rem; color: var(--ink-soft); font-weight: 700; padding: 4px 0; }
+.log-cal-cell {
+  aspect-ratio: 1; border: none; background: none; border-radius: 8px; font-size: 0.82rem;
+  color: var(--ink-soft); cursor: default;
+}
+.log-cal-cell.empty { visibility: hidden; }
+.log-cal-cell.has-activity {
+  background: #eaf2ea; color: var(--primary-dark); font-weight: 700; cursor: pointer;
+}
+.log-cal-cell.has-activity:hover { background: var(--primary); color: #fff; }
+.log-cal-cell.selected { background: var(--primary); color: #fff; }
+.log-calendar-hint { font-size: 0.76rem; color: var(--ink-soft); margin: 10px 0 0; }
+
+.log-date-panel {
+  background: #fbeeee; border: 1px solid #e8c6c6; border-radius: var(--radius);
+  padding: 14px 18px; margin-bottom: 20px;
+}
+.log-date-panel-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.log-date-clear { background: none; border: none; color: var(--ink-soft); font-size: 0.8rem; cursor: pointer; text-decoration: underline; }
+.log-date-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.log-danger-btn {
+  background: #c0524a; color: #fff; border: none; border-radius: 999px; padding: 8px 16px;
+  font-size: 0.82rem; font-weight: 700; cursor: pointer;
+}
+.log-danger-btn:hover { background: #a8433c; }
+.log-danger-btn-outline {
+  background: none; border: 1px solid #c0524a; color: #b64545; border-radius: 999px; padding: 8px 16px;
+  font-size: 0.82rem; font-weight: 700; cursor: pointer;
+}
+.log-range-form { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.log-range-form input[type="time"] { padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; }
+.log-danger-hint { font-size: 0.76rem; color: #8a4a4a; margin: 10px 0 0; }
 
 /* ---------- Static pages ---------- */
 
