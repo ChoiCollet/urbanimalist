@@ -266,6 +266,7 @@ textarea { min-height: 80px; resize: vertical; }
 }
 #form-status { margin-left: 12px; font-size: 0.85rem; color: var(--primary-dark); font-weight: 700; }
 .password-hint { margin: 8px 0 0; font-size: 0.78rem; color: var(--ink-soft); }
+#gimpo-register { background: var(--surface); }
 
 .my-entries-header { display: flex; align-items: center; justify-content: space-between; margin: 32px 0 12px; }
 .io-buttons { display: flex; gap: 8px; }
@@ -326,6 +327,40 @@ footer.site-footer .foot-note { margin-top: 14px; font-size: 0.78rem; color: #a9
   align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; color: var(--ink-soft);
 }
 .rank-count { font-weight: 800; color: var(--primary-dark); }
+
+/* ---------- Activity log ---------- */
+
+.log-filters { display: flex; gap: 8px; margin: 20px 0; }
+.log-filter-btn {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 999px;
+  padding: 8px 18px; font-size: 0.85rem; font-weight: 700; cursor: pointer; color: var(--ink-soft);
+}
+.log-filter-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+.log-filter-btn:hover:not(.active) { border-color: var(--primary); color: var(--primary-dark); }
+
+.log-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 40px; }
+.log-row {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px;
+}
+.log-row-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+.log-time { font-size: 0.78rem; color: var(--ink-soft); }
+.log-map-badge {
+  font-size: 0.72rem; font-weight: 800; padding: 3px 9px; border-radius: 999px;
+  background: var(--bg); color: var(--ink-soft);
+}
+.log-action-badge { font-size: 0.72rem; font-weight: 800; padding: 3px 9px; border-radius: 999px; }
+.log-action-create { background: #eaf2ea; color: var(--primary-dark); }
+.log-action-update { background: #fdf1e0; color: #a86a1f; }
+.log-action-delete { background: #fbeeee; color: #b64545; }
+.log-action-rollback { background: #eef0fa; color: #4a5aa8; }
+.log-rollback-btn {
+  margin-left: auto; background: none; border: 1px solid var(--primary); color: var(--primary-dark);
+  border-radius: 999px; padding: 5px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+}
+.log-rollback-btn:hover { background: var(--primary); color: #fff; }
+.log-rolled-tag { margin-left: auto; font-size: 0.78rem; color: var(--ink-soft); font-weight: 700; }
+.log-row-title { font-size: 0.92rem; font-weight: 600; }
+.log-row-region { font-weight: 400; color: var(--ink-soft); }
 
 /* ---------- Static pages ---------- */
 

@@ -2,6 +2,8 @@
 // GET  /api/gimpo-incidents  -> 전체 자료 목록 조회 (누구나 가능)
 // POST /api/gimpo-incidents  -> 자료 등록 (본문에 password 필요)
 
+import { logAction } from "../_utils/log.js";
+
 function rowToEntry(row) {
   return {
     id: row.id,
@@ -43,12 +45,24 @@ export async function onRequestPost({ request, env }) {
   }
 
   const id = "entry-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
+  const row = {
+    id,
+    dong: body.dong,
+    cause: body.cause || "etc",
+    title: body.title,
+    desc: body.desc || "",
+    source: body.source || "",
+    source_url: body.sourceUrl || "",
+    date: body.date || "",
+  };
   await env.DB.prepare(
     `INSERT INTO gimpo_incidents (id, dong, cause, title, desc, source, source_url, date)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
   )
-    .bind(id, body.dong, body.cause || "etc", body.title, body.desc || "", body.source || "", body.sourceUrl || "", body.date || "")
+    .bind(row.id, row.dong, row.cause, row.title, row.desc, row.source, row.source_url, row.date)
     .run();
+
+  await logAction(env, { map: "map2", entityId: id, action: "create", before: null, after: row });
 
   return json({ id }, 201);
 }

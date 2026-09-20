@@ -32,6 +32,18 @@ CREATE TABLE gimpo_incidents (
   created_at TEXT DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS activity_log (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  map TEXT NOT NULL,
+  entity_id TEXT NOT NULL,
+  action TEXT NOT NULL,
+  before_data TEXT,
+  after_data TEXT,
+  rolled_back INTEGER DEFAULT 0,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_activity_log_created_at ON activity_log(created_at);
+
 INSERT INTO incidents (id, sido, sigungu, cause, title, desc, source, source_url, date) VALUES ('seed-001', '["incheon"]', '연수구', 'etc', '송도서 출몰한 털 듬성듬성 빠진 동물 정체는 너구리…개선충 감염 추정', '개선충 감염', '서울신문', 'https://m.seoul.co.kr/news/society/2025/04/27/20250427500044', '2025-04-27');
 INSERT INTO incidents (id, sido, sigungu, cause, title, desc, source, source_url, date) VALUES ('seed-002', '["incheon"]', '강화군', 'conflict', '서식지 잃고 도심으로 밀려온 야생생물…인간과 갈등 60% 증가', '강화 너구리 발견(서식지 감소)
 전국, 동물로 인한 농작물 피해(2015) > 부상•사망•폐사(2024)', '경향신문', 'https://www.khan.co.kr/article/202603191539001/amp', '2026-03-19');
