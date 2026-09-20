@@ -7,12 +7,12 @@
 
 CREATE TABLE IF NOT EXISTS activity_log (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  map TEXT NOT NULL,              -- 'map1'(전국 지도) 또는 'map2'(김포시 지도)
-  entity_id TEXT NOT NULL,        -- incidents.id 또는 gimpo_incidents.id
-  action TEXT NOT NULL,           -- 'create' | 'update' | 'delete' | 'rollback'
-  before_data TEXT,               -- 변경 전 자료 스냅샷(JSON), 없으면 NULL
-  after_data TEXT,                -- 변경 후 자료 스냅샷(JSON), 없으면 NULL
-  rolled_back INTEGER DEFAULT 0,  -- 이 로그가 이미 롤백되었는지 여부
+  map TEXT NOT NULL,
+  entity_id TEXT NOT NULL,
+  action TEXT NOT NULL,
+  before_data TEXT,
+  after_data TEXT,
+  rolled_back INTEGER DEFAULT 0,
   created_at TEXT DEFAULT (datetime('now'))
 );
 
