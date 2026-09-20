@@ -354,6 +354,12 @@ async function initGimpo() {
   renderGimpoBreadcrumb();
   renderGimpoEntries();
 
+  document.getElementById("gimpo-map-export-btn").addEventListener("click", () => {
+    const label = gimpoState.dong ? gimpoState.dong : "전체";
+    const today = new Date().toISOString().slice(0, 10);
+    exportSvgAsPng(document.getElementById("gimpo-map"), `urbanimalist-지도2-김포시-${label}-${today}.png`);
+  });
+
   const dateField = document.getElementById("gimpo-field-date");
   if (dateField) dateField.value = new Date().toISOString().slice(0, 10);
 }

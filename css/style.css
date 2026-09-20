@@ -168,6 +168,13 @@ section .section-sub { color: var(--ink-soft); margin-bottom: 24px; font-size: 0
   border-radius: 999px; font-weight: 700; cursor: pointer; font-size: 0.85rem;
 }
 
+.export-img-btn {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 12px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 999px;
+  padding: 8px 16px; font-size: 0.82rem; font-weight: 700; color: var(--primary-dark); cursor: pointer;
+}
+.export-img-btn:hover { border-color: var(--primary); background: #eaf2ea; }
+
 .panel-heading { font-weight: 800; margin-bottom: 12px; color: var(--primary-dark); }
 
 #submap-box { margin-bottom: 16px; }

@@ -538,6 +538,13 @@ async function init() {
   populateSelects();
   bindMapEvents();
   document.getElementById("nationwide-btn").addEventListener("click", goNationwide);
+  document.getElementById("map-export-btn").addEventListener("click", () => {
+    const isSubmapVisible = !submapHolder.hidden;
+    const activeSvg = isSubmapVisible ? submapHolder.querySelector("svg") : document.getElementById("korea-map");
+    const label = isSubmapVisible ? provinceName(state.province) : "전국";
+    const today = new Date().toISOString().slice(0, 10);
+    exportSvgAsPng(activeSvg, `urbanimalist-지도1-${label}-${today}.png`);
+  });
   await refreshAllEntries();
   paintMap();
   renderCauseChart();
