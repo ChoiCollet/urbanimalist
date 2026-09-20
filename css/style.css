@@ -19,8 +19,14 @@
 
 * { box-sizing: border-box; }
 
+html {
+  scrollbar-gutter: stable;
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
+  overflow-x: hidden;
   font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg);
   color: var(--ink);
