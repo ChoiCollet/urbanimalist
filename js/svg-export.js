@@ -14,7 +14,17 @@ async function exportSvgAsPng(svgEl, filename, options = {}) {
   }
 
   const clone = svgEl.cloneNode(true);
-  clone.querySelectorAll("path").forEach((p) => {
+  const originalPaths = svgEl.querySelectorAll("path");
+  const clonedPaths = clone.querySelectorAll("path");
+  clonedPaths.forEach((p, i) => {
+    const orig = originalPaths[i];
+    // fill이 var(--map-...) 같은 CSS 변수로 지정된 경우, 복제된 SVG는 독립된 이미지로
+    // 렌더링되어 원본 문서의 CSS 변수를 참조할 수 없다. 그래서 현재 화면에 실제로
+    // 계산되어 있는 색(getComputedStyle)을 읽어서 고정값으로 못박아준다.
+    if (orig) {
+      const resolvedFill = getComputedStyle(orig).fill;
+      if (resolvedFill) p.style.fill = resolvedFill;
+    }
     p.classList.remove("hovered", "selected");
     p.style.stroke = strokeColor;
     p.style.strokeWidth = String(strokeWidth);
