@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>캠페인 요약 리포트 | 어반애니멀리스트</title>
+<meta name="description" content="지도1·지도2에 등록된 자료를 자동 집계해 카드뉴스·포스터 제작에 바로 쓸 수 있도록 정리한 요약 리포트입니다." />
+<meta name="robots" content="noindex" />
+<link rel="canonical" href="https://urbanimalist.pages.dev/report.html" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="site-header no-print">
+  <div class="container">
+    <a href="index.html" class="logo">🐾 어반애니멀리스트<span class="dot">.</span></a>
+    <nav class="main-nav">
+      <a href="index.html#map-tool">전국 지도</a>
+      <a href="gimpo.html">김포시 지도</a>
+      <a href="stats.html">구조 통계</a>
+      <a href="index.html#register">자료 등록</a>
+      <a href="index.html#how-to">이용 방법</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="about.html">소개</a>
+      <a href="contact.html">문의</a>
+    </nav>
+  </div>
+</header>
+
+<main class="static-page report-page">
+  <div class="container">
+    <div class="report-top no-print">
+      <div>
+        <h1>캠페인 요약 리포트</h1>
+        <p class="section-sub">지도1·지도2에 지금까지 등록된 자료를 자동 집계했습니다. 카드뉴스·포스터에 쓸 숫자·문구·사례를 여기서 바로 가져다 쓰세요.</p>
+      </div>
+      <button id="report-print-btn" type="button" class="submit-btn">🖨️ 인쇄 / PDF로 저장</button>
+    </div>
+    <p id="report-updated" class="report-updated no-print"></p>
+
+    <section class="report-section">
+      <h2>핵심 숫자</h2>
+      <div class="stat-tiles" id="stat-tiles">
+        <p class="empty-msg">불러오는 중...</p>
+      </div>
+    </section>
+
+    <section class="report-section">
+      <h2>원인 유형별 순위</h2>
+      <p class="section-sub">지도1 + 지도2 전체 등록 자료 기준입니다.</p>
+      <div id="cause-rank-list" class="rank-list"></div>
+    </section>
+
+    <section class="report-section">
+      <h2>지역별 최다 발생 Top 3</h2>
+      <div class="region-top-grid">
+        <div>
+          <h3>전국 지도 (시도)</h3>
+          <div id="region-top-map1" class="rank-list"></div>
+        </div>
+        <div>
+          <h3>김포시 지도 (읍·면·동)</h3>
+          <div id="region-top-map2" class="rank-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="report-section">
+      <h2>대표 사례</h2>
+      <p class="section-sub">원인 유형별로 가장 최근 등록된, 출처와 설명이 갖춰진 사례를 하나씩 골랐습니다.</p>
+      <div id="representative-cases" class="entry-list"></div>
+    </section>
+
+    <section class="report-section">
+      <h2>카드뉴스용 문구 제안</h2>
+      <p class="section-sub">지금 숫자를 그대로 넣어 자동으로 만든 문장입니다. 마음에 드는 것을 복사해서 그대로 쓰거나 다듬어 쓰세요.</p>
+      <div id="quote-suggestions" class="quote-list"></div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer no-print">
+  <div class="container">
+    <div>
+      <a href="gimpo.html">김포시 지도</a>
+      <a href="stats.html">구조 통계</a>
+      <a href="causes.html">유형 관리</a>
+      <a href="log.html">활동 로그</a>
+      <a href="about.html">소개</a>
+      <a href="contact.html">문의하기</a>
+      <a href="privacy.html">개인정보 처리방침</a>
+      <a href="https://github.com/ChoiCollet/urbanimalist" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+    <p class="foot-note">© 2026 어반애니멀리스트. 학생주도 프로젝트 봉사활동으로 제작된 비영리 정보 공유 사이트입니다.</p>
+  </div>
+</footer>
+
+<script src="js/regions.js"></script>
+<script src="js/causes.js"></script>
+<script src="js/report.js"></script>
+</body>
+</html>
