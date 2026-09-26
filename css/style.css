@@ -505,3 +505,89 @@ footer.site-footer .foot-note { margin-top: 14px; font-size: 0.78rem; color: #a9
 .static-page h1 { color: var(--primary-dark); }
 .static-page h2 { font-size: 1.15rem; margin-top: 30px; color: var(--primary-dark); }
 .static-page section { padding: 0; }
+
+/* ============================================================
+   모바일 점검 (공통) - 680px 이하는 폰, 480px 이하는 작은 폰 기준
+   ============================================================ */
+
+@media (max-width: 680px) {
+  .site-header .container { padding: 12px 16px; gap: 10px; }
+  .logo { font-size: 1rem; flex-shrink: 0; }
+  nav.main-nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 14px;
+    padding-bottom: 2px;
+    -webkit-mask-image: linear-gradient(to right, black 92%, transparent 100%);
+    mask-image: linear-gradient(to right, black 92%, transparent 100%);
+  }
+  nav.main-nav::-webkit-scrollbar { display: none; }
+  nav.main-nav a { white-space: nowrap; font-size: 0.86rem; }
+
+  .container { padding: 0 16px; }
+
+  .hero { padding: 32px 0 22px; }
+  .hero h1 { font-size: 1.4rem; line-height: 1.4; }
+  .hero p { font-size: 0.88rem; }
+  .hero .cta-btn { padding: 10px 20px; font-size: 0.9rem; }
+
+  section { padding: 32px 0; }
+  section h2 { font-size: 1.15rem; }
+  section .section-sub { font-size: 0.86rem; }
+
+  .tool-header { flex-direction: column; align-items: stretch; }
+  #global-search, #gimpo-search { width: 100%; }
+
+  .steps, .features { grid-template-columns: 1fr; }
+  .stat-tiles { grid-template-columns: repeat(2, 1fr); }
+  .stat-num { font-size: 1.35rem; }
+
+  .chart-box { height: 230px; padding: 12px; }
+  .cause-chart-box { height: 220px; padding: 12px; }
+
+  .entry-top { row-gap: 6px; }
+  .entry-actions { margin-left: 0; width: 100%; justify-content: flex-end; }
+
+  .log-row-top { gap: 8px; }
+  .log-rollback-btn, .log-del-btn { padding: 6px 12px; }
+  .log-cal-nav { width: 34px; height: 34px; }
+  .log-cal-cell { font-size: 0.9rem; }
+
+  .quote-item { flex-direction: column; align-items: stretch; }
+  .quote-copy-btn { width: 100%; }
+
+  .report-top { flex-direction: column; }
+  #report-print-btn { width: 100%; }
+
+  .cause-row { flex-direction: column; align-items: stretch; }
+  .cause-usage { order: 3; }
+
+  /* 지도 안 글자가 화면 폭에 맞춰 그래픽과 같이 줄어들어 너무 작아지는 것을 보정 */
+  .map-wrap svg text.sgg-label,
+  .submap-wrap svg text.sgg-label {
+    font-size: 17px;
+  }
+  .map-wrap svg text.sgg-label.small,
+  .submap-wrap svg text.sgg-label.small {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: 1.25rem; }
+  .stat-tiles { grid-template-columns: 1fr; }
+  .io-buttons { flex-direction: column; align-items: stretch; }
+  .io-buttons button, .io-buttons label { text-align: center; }
+  .year-tabs, .log-filters { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+  .year-tab, .log-filter-btn { flex-shrink: 0; }
+
+  .map-wrap svg text.sgg-label,
+  .submap-wrap svg text.sgg-label {
+    font-size: 19px;
+  }
+  .map-wrap svg text.sgg-label.small,
+  .submap-wrap svg text.sgg-label.small {
+    font-size: 15px;
+  }
+}
