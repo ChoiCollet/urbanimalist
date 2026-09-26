@@ -208,6 +208,12 @@ section .section-sub { color: var(--ink-soft); margin-bottom: 24px; font-size: 0
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px 16px;
+  scroll-margin-top: 90px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.entry-card.entry-highlighted {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 25%, transparent);
 }
 .entry-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
 .tag {
@@ -217,6 +223,8 @@ section .section-sub { color: var(--ink-soft); margin-bottom: 24px; font-size: 0
 }
 .entry-region { font-size: 0.78rem; color: var(--ink-soft); }
 .entry-actions { margin-left: auto; display: flex; gap: 10px; }
+.entry-share { background: none; border: none; color: var(--ink-soft); cursor: pointer; font-size: 0.78rem; font-weight: 700; }
+.entry-share:hover { color: var(--primary-dark); }
 .entry-edit { background: none; border: none; color: var(--primary-dark); cursor: pointer; font-size: 0.78rem; font-weight: 700; }
 .entry-del { background: none; border: none; color: #b64545; cursor: pointer; font-size: 0.78rem; font-weight: 700; }
 .entry-card h4 { margin: 4px 0; font-size: 1rem; }

@@ -246,10 +246,11 @@ function entryCardHTML(entry) {
   const src = entry.sourceUrl
     ? `<a href="${escapeAttr(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(entry.source || "출처 보기")}</a>`
     : escapeHtml(entry.source || "출처 미기재");
-  const actions = `<button class="entry-edit" data-id="${entry.id}" title="수정">수정</button>
+  const actions = `<button class="entry-share" data-id="${entry.id}" title="이 사례 공유 링크 복사">🔗 링크</button>
+       <button class="entry-edit" data-id="${entry.id}" title="수정">수정</button>
        <button class="entry-del" data-id="${entry.id}" title="삭제">삭제</button>`;
   return `
-    <article class="entry-card">
+    <article class="entry-card" id="entry-${entry.id}">
       <div class="entry-top">
         ${causeTag}
         <span class="entry-region">${escapeHtml(region)}</span>
@@ -271,6 +272,30 @@ function bindEntryActions(container) {
   container.querySelectorAll(".entry-edit").forEach((btn) => {
     btn.addEventListener("click", () => startEdit(btn.dataset.id));
   });
+  container.querySelectorAll(".entry-share").forEach((btn) => {
+    btn.addEventListener("click", () => copyEntryPermalink(btn, btn.dataset.id));
+  });
+}
+
+// ---------- 공유 링크(?id=)로 들어왔을 때 해당 사례로 이동 ----------
+
+function openEntryFromUrl() {
+  const id = getPermalinkIdFromUrl();
+  if (!id) return false;
+  const entry = state.allEntries.find((e) => String(e.id) === String(id));
+  if (!entry) return false;
+
+  const firstSido = entry.sido && entry.sido[0];
+  if (firstSido === NATIONWIDE_ID) {
+    goNationwide();
+  } else if (firstSido) {
+    goProvince(firstSido);
+    if (entry.sigungu) goSigungu(entry.sigungu);
+  } else {
+    return false;
+  }
+  requestAnimationFrame(() => highlightEntryCard(entry.id));
+  return true;
 }
 
 // ---------- 레벨 2: 시도 내 시군구 ----------
@@ -548,7 +573,9 @@ async function init() {
   await refreshAllEntries();
   paintMap();
   renderCauseChart();
-  showLevel(1);
+  if (!openEntryFromUrl()) {
+    showLevel(1);
+  }
 
   const dateField = document.getElementById("field-date");
   if (dateField) dateField.value = new Date().toISOString().slice(0, 10);

@@ -114,9 +114,9 @@ function gimpoEntryCardHTML(entry) {
   const src = entry.sourceUrl
     ? `<a href="${gimpoEscapeAttr(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">${gimpoEscapeHtml(entry.source || "출처 보기")}</a>`
     : gimpoEscapeHtml(entry.source || "출처 미기재");
-  const actions = `<button class="entry-edit" data-id="${entry.id}">수정</button><button class="entry-del" data-id="${entry.id}">삭제</button>`;
+  const actions = `<button class="entry-share" data-id="${entry.id}" title="이 사례 공유 링크 복사">🔗 링크</button><button class="entry-edit" data-id="${entry.id}">수정</button><button class="entry-del" data-id="${entry.id}">삭제</button>`;
   return `
-    <article class="entry-card">
+    <article class="entry-card" id="entry-${entry.id}">
       <div class="entry-top">
         ${causeTag}
         <span class="entry-region">김포시 ${gimpoEscapeHtml(entry.dong || "")}</span>
@@ -138,6 +138,21 @@ function bindGimpoEntryActions(container) {
   container.querySelectorAll(".entry-edit").forEach((btn) => {
     btn.addEventListener("click", () => startGimpoEdit(btn.dataset.id));
   });
+  container.querySelectorAll(".entry-share").forEach((btn) => {
+    btn.addEventListener("click", () => copyEntryPermalink(btn, btn.dataset.id));
+  });
+}
+
+// ---------- 공유 링크(?id=)로 들어왔을 때 해당 사례로 이동 ----------
+
+function openGimpoEntryFromUrl() {
+  const id = getPermalinkIdFromUrl();
+  if (!id) return false;
+  const entry = gimpoState.allEntries.find((e) => String(e.id) === String(id));
+  if (!entry) return false;
+  selectDong(entry.dong || null);
+  requestAnimationFrame(() => highlightEntryCard(entry.id));
+  return true;
 }
 
 function renderGimpoEntries() {
@@ -351,8 +366,10 @@ async function initGimpo() {
   await refreshGimpoEntries();
   paintGimpoMap();
   renderGimpoCauseChart();
-  renderGimpoBreadcrumb();
-  renderGimpoEntries();
+  if (!openGimpoEntryFromUrl()) {
+    renderGimpoBreadcrumb();
+    renderGimpoEntries();
+  }
 
   document.getElementById("gimpo-map-export-btn").addEventListener("click", () => {
     const label = gimpoState.dong ? gimpoState.dong : "전체";
