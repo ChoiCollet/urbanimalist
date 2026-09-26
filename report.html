@@ -34,9 +34,21 @@
         <h1>캠페인 요약 리포트</h1>
         <p class="section-sub">지도1·지도2에 지금까지 등록된 자료를 자동 집계했습니다. 카드뉴스·포스터에 쓸 숫자·문구·사례를 여기서 바로 가져다 쓰세요.</p>
       </div>
-      <button id="report-print-btn" type="button" class="submit-btn">🖨️ 인쇄 / PDF로 저장</button>
+      <div class="report-actions">
+        <button id="report-print-btn" type="button" class="submit-btn">🖨️ 인쇄 / PDF로 저장</button>
+        <button id="qr-generate-btn" type="button" class="cancel-btn">🔳 QR코드 생성</button>
+      </div>
     </div>
     <p id="report-updated" class="report-updated no-print"></p>
+
+    <div id="qr-panel" class="qr-panel no-print" hidden>
+      <canvas id="qr-canvas"></canvas>
+      <div class="qr-panel-info">
+        <p class="qr-panel-desc">이 QR코드를 스캔하면 지금 보고 있는 리포트 페이지로 바로 연결됩니다. 포스터·카드뉴스에 인쇄해서 사용하세요.</p>
+        <p class="qr-url" id="qr-url-text"></p>
+        <button id="qr-download-btn" type="button" class="submit-btn">PNG 다운로드</button>
+      </div>
+    </div>
 
     <section class="report-section">
       <h2>핵심 숫자</h2>
@@ -95,6 +107,7 @@
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script src="js/regions.js"></script>
 <script src="js/causes.js"></script>
 <script src="js/report.js"></script>

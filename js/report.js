@@ -224,6 +224,45 @@ function renderQuoteSuggestions(map1, map2, causeRanking, topMap1, topMap2, pick
 
 document.getElementById("report-print-btn").addEventListener("click", () => window.print());
 
+// ---------- QR코드 ----------
+
+document.getElementById("qr-generate-btn").addEventListener("click", () => {
+  const panel = document.getElementById("qr-panel");
+  const canvas = document.getElementById("qr-canvas");
+  const url = window.location.href;
+
+  if (typeof QRCode === "undefined") {
+    alert("QR코드 생성 기능을 불러오지 못했습니다. 인터넷 연결을 확인한 뒤 새로고침해 주세요.");
+    return;
+  }
+
+  QRCode.toCanvas(canvas, url, { width: 220, margin: 1 }, (err) => {
+    if (err) {
+      alert("QR코드 생성에 실패했습니다: " + err.message);
+      return;
+    }
+    document.getElementById("qr-url-text").textContent = url;
+    panel.hidden = false;
+    panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+});
+
+document.getElementById("qr-download-btn").addEventListener("click", () => {
+  const canvas = document.getElementById("qr-canvas");
+  canvas.toBlob((blob) => {
+    if (!blob) {
+      alert("이미지 생성에 실패했습니다.");
+      return;
+    }
+    const a = document.createElement("a");
+    const dlUrl = URL.createObjectURL(blob);
+    a.href = dlUrl;
+    a.download = "urbanimalist-report-qr.png";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(dlUrl), 3000);
+  }, "image/png");
+});
+
 async function initReport() {
   const [map1, map2] = await Promise.all([fetchJsonSafeR("/api/incidents"), fetchJsonSafeR("/api/gimpo-incidents")]);
 
