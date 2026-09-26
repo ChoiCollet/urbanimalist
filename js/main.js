@@ -120,6 +120,15 @@ function showLevel(n) {
 }
 
 function renderBreadcrumb() {
+  if (state.search.trim()) {
+    breadcrumbEl.innerHTML = `<button class="crumb" data-clear-search>전국</button><span class="crumb-sep">›</span><span class="crumb crumb-current">검색 결과</span>`;
+    breadcrumbEl.querySelector("[data-clear-search]").addEventListener("click", () => {
+      searchInput.value = "";
+      state.search = "";
+      resumeAfterSearch();
+    });
+    return;
+  }
   const parts = [`<button class="crumb" data-goto="1">전국</button>`];
   if (state.province) {
     parts.push(`<span class="crumb-sep">›</span><button class="crumb" data-goto="2">${provinceName(state.province)}</button>`);
@@ -137,7 +146,14 @@ function renderBreadcrumb() {
   });
 }
 
+function clearSearchState() {
+  if (!state.search) return;
+  state.search = "";
+  if (searchInput) searchInput.value = "";
+}
+
 function goProvinceList() {
+  clearSearchState();
   state.province = null;
   state.sigungu = null;
   showNationalMap();
@@ -146,6 +162,7 @@ function goProvinceList() {
 }
 
 function goProvince(id) {
+  clearSearchState();
   state.province = id;
   state.sigungu = null;
   if (SUBMAP_PROVINCES[id]) {
@@ -159,12 +176,14 @@ function goProvince(id) {
 }
 
 function goSigungu(name) {
+  clearSearchState();
   state.sigungu = name;
   renderLevel3();
   showLevel(3);
 }
 
 function goNationwide() {
+  clearSearchState();
   state.province = NATIONWIDE_ID;
   state.sigungu = null;
   showNationalMap();
@@ -334,26 +353,34 @@ function renderLevel2() {
 function renderLevel3(showAllInProvince = false) {
   const wrap = levelPanels[3];
   const heading = wrap.querySelector(".panel-heading");
+  const query = state.search.trim();
   let entries;
-  if (state.province === NATIONWIDE_ID) {
+
+  if (query) {
+    entries = state.allEntries;
+  } else if (state.province === NATIONWIDE_ID) {
     entries = state.allEntries.filter((e) => e.sido && e.sido.includes(NATIONWIDE_ID));
-    heading.textContent = `전국 공통 자료 · ${entries.length}건`;
   } else if (showAllInProvince || !state.sigungu) {
     entries = entriesForProvince(state.province);
-    heading.textContent = `${provinceName(state.province)} 전체 · ${entries.length}건`;
   } else {
     entries = entriesForSigungu(state.province, state.sigungu);
-    heading.textContent = `${provinceName(state.province)} ${state.sigungu} · ${entries.length}건`;
   }
 
-  if (state.search.trim()) {
-    const q = state.search.trim().toLowerCase();
+  if (query) {
+    const q = query.toLowerCase();
     entries = entries.filter(
       (e) =>
         (e.title || "").toLowerCase().includes(q) ||
         (e.desc || "").toLowerCase().includes(q) ||
         (e.source || "").toLowerCase().includes(q)
     );
+    heading.textContent = `"${query}" 검색 결과 · 전체 지역 중 ${entries.length}건`;
+  } else if (state.province === NATIONWIDE_ID) {
+    heading.textContent = `전국 공통 자료 · ${entries.length}건`;
+  } else if (showAllInProvince || !state.sigungu) {
+    heading.textContent = `${provinceName(state.province)} 전체 · ${entries.length}건`;
+  } else {
+    heading.textContent = `${provinceName(state.province)} ${state.sigungu} · ${entries.length}건`;
   }
 
   const list = wrap.querySelector(".entry-list");
@@ -363,12 +390,31 @@ function renderLevel3(showAllInProvince = false) {
   bindEntryActions(list);
 }
 
-// ---------- 검색 ----------
+// ---------- 검색 (지역 상관없이 전체 자료 대상 통합 검색) ----------
+
+function resumeAfterSearch() {
+  if (state.sigungu) {
+    renderLevel3();
+    showLevel(3);
+  } else if (state.province) {
+    renderLevel2();
+    showLevel(2);
+  } else {
+    showNationalMap();
+    paintMap();
+    showLevel(1);
+  }
+}
 
 const searchInput = document.getElementById("global-search");
 searchInput.addEventListener("input", (e) => {
   state.search = e.target.value;
-  if (state.level === 3) renderLevel3(!state.sigungu);
+  if (state.search.trim()) {
+    renderLevel3(true);
+    showLevel(3);
+  } else {
+    resumeAfterSearch();
+  }
 });
 
 // ---------- 자료 등록 / 수정 폼 ----------

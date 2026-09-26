@@ -92,6 +92,16 @@ function bindGimpoMapEvents() {
 const gimpoBreadcrumbEl = document.getElementById("gimpo-breadcrumb");
 
 function renderGimpoBreadcrumb() {
+  if (gimpoState.search.trim()) {
+    gimpoBreadcrumbEl.innerHTML = `<button class="crumb" data-clear-search>김포시 전체</button><span class="crumb-sep">›</span><span class="crumb crumb-current">검색 결과</span>`;
+    gimpoBreadcrumbEl.querySelector("[data-clear-search]").addEventListener("click", () => {
+      document.getElementById("gimpo-search").value = "";
+      gimpoState.search = "";
+      renderGimpoBreadcrumb();
+      renderGimpoEntries();
+    });
+    return;
+  }
   const parts = [`<button class="crumb" data-all>김포시 전체</button>`];
   if (gimpoState.dong) {
     parts.push(`<span class="crumb-sep">›</span><span class="crumb crumb-current">${gimpoState.dong}</span>`);
@@ -101,6 +111,11 @@ function renderGimpoBreadcrumb() {
 }
 
 function selectDong(name) {
+  if (gimpoState.search) {
+    gimpoState.search = "";
+    const input = document.getElementById("gimpo-search");
+    if (input) input.value = "";
+  }
   gimpoState.dong = name;
   paintGimpoMap();
   renderGimpoBreadcrumb();
@@ -157,18 +172,21 @@ function openGimpoEntryFromUrl() {
 
 function renderGimpoEntries() {
   const heading = document.getElementById("gimpo-panel-heading");
-  let entries = gimpoEntriesForDong(gimpoState.dong);
-  const label = gimpoState.dong ? `김포시 ${gimpoState.dong}` : "김포시 전체";
-  heading.textContent = `${label} · ${entries.length}건`;
+  const query = gimpoState.search.trim();
+  let entries = query ? gimpoState.allEntries.slice() : gimpoEntriesForDong(gimpoState.dong);
 
-  if (gimpoState.search.trim()) {
-    const q = gimpoState.search.trim().toLowerCase();
+  if (query) {
+    const q = query.toLowerCase();
     entries = entries.filter(
       (e) =>
         (e.title || "").toLowerCase().includes(q) ||
         (e.desc || "").toLowerCase().includes(q) ||
         (e.source || "").toLowerCase().includes(q)
     );
+    heading.textContent = `"${query}" 검색 결과 · 전체 동 중 ${entries.length}건`;
+  } else {
+    const label = gimpoState.dong ? `김포시 ${gimpoState.dong}` : "김포시 전체";
+    heading.textContent = `${label} · ${entries.length}건`;
   }
 
   const list = document.getElementById("gimpo-entry-list");
@@ -178,10 +196,11 @@ function renderGimpoEntries() {
   bindGimpoEntryActions(list);
 }
 
-// ---------- 검색 ----------
+// ---------- 검색 (선택한 동 상관없이 전체 자료 대상 통합 검색) ----------
 
 document.getElementById("gimpo-search").addEventListener("input", (e) => {
   gimpoState.search = e.target.value;
+  renderGimpoBreadcrumb();
   renderGimpoEntries();
 });
 
