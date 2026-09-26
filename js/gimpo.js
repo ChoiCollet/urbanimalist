@@ -37,9 +37,11 @@ async function refreshGimpoEntries() {
     const res = await fetch(GIMPO_API_BASE, { cache: "no-store" });
     if (!res.ok) throw new Error("fetch failed");
     gimpoState.allEntries = await res.json();
+    return true;
   } catch (e) {
     console.error("김포시 자료를 불러오지 못했습니다.", e);
     gimpoState.allEntries = [];
+    return false;
   }
 }
 
@@ -125,10 +127,12 @@ function selectDong(name) {
 // ---------- 자료 카드 ----------
 
 function gimpoEntryCardHTML(entry) {
+  const query = gimpoState.search.trim();
   const causeTag = `<span class="tag" style="--tag-color:${causeColor(entry.cause)}">${causeName(entry.cause)}</span>`;
+  const sourceLabel = entry.source || (entry.sourceUrl ? "출처 보기" : "출처 미기재");
   const src = entry.sourceUrl
-    ? `<a href="${gimpoEscapeAttr(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">${gimpoEscapeHtml(entry.source || "출처 보기")}</a>`
-    : gimpoEscapeHtml(entry.source || "출처 미기재");
+    ? `<a href="${gimpoEscapeAttr(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">${highlightText(sourceLabel, query, gimpoEscapeHtml)}</a>`
+    : highlightText(sourceLabel, query, gimpoEscapeHtml);
   const actions = `<button class="entry-share" data-id="${entry.id}" title="이 사례 공유 링크 복사">🔗 링크</button><button class="entry-edit" data-id="${entry.id}">수정</button><button class="entry-del" data-id="${entry.id}">삭제</button>`;
   return `
     <article class="entry-card" id="entry-${entry.id}">
@@ -137,8 +141,8 @@ function gimpoEntryCardHTML(entry) {
         <span class="entry-region">김포시 ${gimpoEscapeHtml(entry.dong || "")}</span>
         <span class="entry-actions">${actions}</span>
       </div>
-      <h4>${gimpoEscapeHtml(entry.title)}</h4>
-      <p>${gimpoEscapeHtml(entry.desc || "")}</p>
+      <h4>${highlightText(entry.title, query, gimpoEscapeHtml)}</h4>
+      <p>${highlightText(entry.desc || "", query, gimpoEscapeHtml)}</p>
       <div class="entry-meta">
         <span>${gimpoEscapeHtml(entry.date || "")}</span>
         <span>${src}</span>
@@ -382,7 +386,9 @@ function renderGimpoCauseChart() {
 async function initGimpo() {
   populateGimpoSelects();
   bindGimpoMapEvents();
-  await refreshGimpoEntries();
+  setDataStatus("gimpo-data-status", "자료를 불러오는 중...");
+  const ok = await refreshGimpoEntries();
+  setDataStatus("gimpo-data-status", ok ? "" : "자료를 불러오지 못했습니다. 새로고침해 주세요.", !ok);
   paintGimpoMap();
   renderGimpoCauseChart();
   if (!openGimpoEntryFromUrl()) {

@@ -222,6 +222,9 @@ section .section-sub { color: var(--ink-soft); margin-bottom: 24px; font-size: 0
   color: var(--tag-color);
 }
 .entry-region { font-size: 0.78rem; color: var(--ink-soft); }
+.entry-card mark { background: color-mix(in srgb, var(--primary) 35%, #fff176); color: inherit; border-radius: 3px; padding: 0 1px; }
+.data-status { font-size: 0.82rem; color: var(--ink-soft); margin: -8px 0 14px; }
+.data-status-error { color: #b64545; }
 .entry-actions { margin-left: auto; display: flex; gap: 10px; }
 .entry-share { background: none; border: none; color: var(--ink-soft); cursor: pointer; font-size: 0.78rem; font-weight: 700; }
 .entry-share:hover { color: var(--primary-dark); }

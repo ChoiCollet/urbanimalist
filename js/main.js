@@ -40,9 +40,11 @@ async function refreshAllEntries() {
     const res = await fetch(API_BASE, { cache: "no-store" });
     if (!res.ok) throw new Error("fetch failed");
     state.allEntries = await res.json();
+    return true;
   } catch (e) {
     console.error("자료를 불러오지 못했습니다.", e);
     state.allEntries = [];
+    return false;
   }
 }
 
@@ -258,13 +260,15 @@ async function renderSubmap(provinceId) {
 // ---------- 렌더링: 자료 카드 ----------
 
 function entryCardHTML(entry) {
+  const query = state.search.trim();
   const causeTag = `<span class="tag" style="--tag-color:${causeColor(entry.cause)}">${causeName(entry.cause)}</span>`;
   const region = entry.sido && entry.sido[0] === NATIONWIDE_ID
     ? "전국"
     : `${(entry.sido || []).map(provinceName).join(" · ")}${entry.sigungu ? " " + entry.sigungu : ""}`;
+  const sourceLabel = entry.source || (entry.sourceUrl ? "출처 보기" : "출처 미기재");
   const src = entry.sourceUrl
-    ? `<a href="${escapeAttr(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(entry.source || "출처 보기")}</a>`
-    : escapeHtml(entry.source || "출처 미기재");
+    ? `<a href="${escapeAttr(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">${highlightText(sourceLabel, query, escapeHtml)}</a>`
+    : highlightText(sourceLabel, query, escapeHtml);
   const actions = `<button class="entry-share" data-id="${entry.id}" title="이 사례 공유 링크 복사">🔗 링크</button>
        <button class="entry-edit" data-id="${entry.id}" title="수정">수정</button>
        <button class="entry-del" data-id="${entry.id}" title="삭제">삭제</button>`;
@@ -275,8 +279,8 @@ function entryCardHTML(entry) {
         <span class="entry-region">${escapeHtml(region)}</span>
         <span class="entry-actions">${actions}</span>
       </div>
-      <h4>${escapeHtml(entry.title)}</h4>
-      <p>${escapeHtml(entry.desc || "")}</p>
+      <h4>${highlightText(entry.title, query, escapeHtml)}</h4>
+      <p>${highlightText(entry.desc || "", query, escapeHtml)}</p>
       <div class="entry-meta">
         <span>${escapeHtml(entry.date || "")}</span>
         <span>${src}</span>
@@ -616,7 +620,9 @@ async function init() {
     const today = new Date().toISOString().slice(0, 10);
     exportSvgAsPng(activeSvg, `urbanimalist-지도1-${label}-${today}.png`);
   });
-  await refreshAllEntries();
+  setDataStatus("data-status", "자료를 불러오는 중...");
+  const ok = await refreshAllEntries();
+  setDataStatus("data-status", ok ? "" : "자료를 불러오지 못했습니다. 새로고침해 주세요.", !ok);
   paintMap();
   renderCauseChart();
   if (!openEntryFromUrl()) {

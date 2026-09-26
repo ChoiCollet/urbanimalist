@@ -40,3 +40,40 @@ function highlightEntryCard(id) {
   setTimeout(() => el.classList.remove("entry-highlighted"), 2500);
   return true;
 }
+
+// ---------- 검색어 하이라이트 ----------
+// rawText를 escapeFn으로 이스케이프하면서, query와 일치하는 구간만 <mark>로 감싼다.
+
+function highlightText(rawText, query, escapeFn) {
+  const text = String(rawText || "");
+  const q = (query || "").trim();
+  if (!q) return escapeFn(text);
+
+  const lower = text.toLowerCase();
+  const qLower = q.toLowerCase();
+  let result = "";
+  let i = 0;
+  let idx = lower.indexOf(qLower, i);
+  while (idx !== -1) {
+    result += escapeFn(text.slice(i, idx));
+    result += `<mark>${escapeFn(text.slice(idx, idx + q.length))}</mark>`;
+    i = idx + q.length;
+    idx = lower.indexOf(qLower, i);
+  }
+  result += escapeFn(text.slice(i));
+  return result;
+}
+
+// ---------- 자료 불러오기 상태 표시 ----------
+
+function setDataStatus(elId, msg, isError = false) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  if (!msg) {
+    el.hidden = true;
+    return;
+  }
+  el.hidden = false;
+  el.textContent = msg;
+  el.classList.toggle("data-status-error", isError);
+}
