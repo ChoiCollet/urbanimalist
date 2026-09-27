@@ -475,6 +475,22 @@ footer.site-footer .foot-note { margin-top: 14px; font-size: 0.78rem; color: #a9
 .log-cal-cell.selected { background: var(--primary); color: #fff; }
 .log-calendar-hint { font-size: 0.76rem; color: var(--ink-soft); margin: 10px 0 0; }
 
+.log-audit-box {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px 18px; margin-bottom: 20px;
+}
+.log-audit-hint { font-size: 0.82rem; color: var(--ink-soft); margin: 0 0 14px; }
+.log-audit-hint code { background: var(--bg); border-radius: 4px; padding: 1px 5px; }
+.log-audit-count { font-size: 0.82rem; font-weight: 700; color: var(--primary-dark); margin: 0 0 10px; }
+.log-audit-list { display: flex; flex-direction: column; gap: 10px; }
+.log-audit-card {
+  background: #fdf1e0; border: 1px solid #e8d6b6; border-radius: var(--radius); padding: 12px 16px;
+}
+.log-audit-url { font-size: 0.82rem; color: var(--ink-soft); margin: 6px 0; word-break: break-all; }
+.log-audit-url code { background: var(--surface); border-radius: 4px; padding: 1px 5px; }
+.log-audit-fix-link { font-size: 0.82rem; font-weight: 700; color: var(--primary-dark); }
+.log-audit-fix-link:hover { text-decoration: underline; }
+
 .log-date-panel {
   background: #fbeeee; border: 1px solid #e8c6c6; border-radius: var(--radius);
   padding: 14px 18px; margin-bottom: 20px;

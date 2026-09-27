@@ -45,6 +45,14 @@
       <button class="log-filter-btn" data-map="map1">전국 지도</button>
       <button class="log-filter-btn" data-map="map2">김포시 지도</button>
       <button class="log-filter-btn" id="log-calendar-toggle">날짜로 보기 ▾</button>
+      <button class="log-filter-btn" id="log-audit-toggle">출처 링크 검사 ▾</button>
+    </div>
+
+    <div id="log-audit-box" class="log-audit-box" hidden>
+      <p class="log-audit-hint">전국 지도·김포시 지도에 <strong>등록된 자료</strong> 중, 출처 링크가 <code>http://</code> 또는 <code>https://</code>로 시작하지 않는 항목을 찾아 보여줍니다. (활동 로그가 아니라 실제 등록 자료 자체를 검사합니다.)</p>
+      <div id="log-audit-list" class="log-audit-list">
+        <p class="empty-msg">검사 중...</p>
+      </div>
     </div>
 
     <div id="log-calendar-box" class="log-calendar-box" hidden>

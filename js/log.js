@@ -361,6 +361,62 @@ document.querySelectorAll(".log-filter-btn[data-map]").forEach((btn) => {
   });
 });
 
+// ---------- 출처 링크 검사 (자료 자체를 검사 — 활동 로그와 무관) ----------
+
+function isBadSourceUrl(url) {
+  const u = (url || "").trim();
+  return !!u && !/^https?:\/\//i.test(u);
+}
+
+function auditCardHTML(entry) {
+  const mapLabel = entry.map === "map1" ? "전국 지도" : "김포시 지도";
+  const href = entry.map === "map1"
+    ? `index.html?id=${encodeURIComponent(entry.id)}`
+    : `gimpo.html?id=${encodeURIComponent(entry.id)}`;
+  return `
+    <article class="log-audit-card">
+      <div class="log-row-top">
+        <span class="log-map-badge">${logEscapeHtml(mapLabel)}</span>
+        <span class="log-row-title">${logEscapeHtml(entry.title || "(제목 없음)")}</span>
+      </div>
+      <p class="log-audit-url">출처 링크: <code>${logEscapeHtml(entry.sourceUrl || "")}</code></p>
+      <a class="log-audit-fix-link" href="${href}" target="_blank" rel="noopener noreferrer">해당 자료로 가서 수정하기 →</a>
+    </article>`;
+}
+
+async function loadAndRenderAudit() {
+  const list = document.getElementById("log-audit-list");
+  list.innerHTML = `<p class="empty-msg">검사 중...</p>`;
+  try {
+    const [map1Res, map2Res] = await Promise.all([
+      fetch("/api/incidents", { cache: "no-store" }),
+      fetch("/api/gimpo-incidents", { cache: "no-store" }),
+    ]);
+    if (!map1Res.ok || !map2Res.ok) throw new Error("fetch failed");
+    const map1 = await map1Res.json();
+    const map2 = await map2Res.json();
+
+    const flagged = [
+      ...map1.filter((e) => isBadSourceUrl(e.sourceUrl)).map((e) => ({ ...e, map: "map1" })),
+      ...map2.filter((e) => isBadSourceUrl(e.sourceUrl)).map((e) => ({ ...e, map: "map2" })),
+    ];
+
+    list.innerHTML = flagged.length
+      ? `<p class="log-audit-count">${flagged.length}건 발견</p>` + flagged.map(auditCardHTML).join("")
+      : `<p class="empty-msg">http(s)://로 시작하지 않는 출처 링크를 가진 자료가 없습니다.</p>`;
+  } catch (e) {
+    console.error("출처 링크 검사 자료를 불러오지 못했습니다.", e);
+    list.innerHTML = `<p class="empty-msg">자료를 불러오지 못했습니다. 새로고침해 주세요.</p>`;
+  }
+}
+
+document.getElementById("log-audit-toggle").addEventListener("click", () => {
+  const box = document.getElementById("log-audit-box");
+  const wasHidden = box.hidden;
+  box.hidden = !box.hidden;
+  if (wasHidden) loadAndRenderAudit();
+});
+
 // ---------- 초기화 ----------
 
 async function loadLogs() {
