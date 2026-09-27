@@ -43,6 +43,15 @@ class TextRewriter {
   }
 }
 
+// 진단용: 어느 단계에서 처리가 끝났는지 X-Permalink-Debug 응답 헤더에 남긴다.
+// 화면에는 전혀 보이지 않고, 브라우저 개발자 도구(F12) > Network 탭에서만 확인 가능하다.
+async function withDebugHeader(responseOrPromise, reason) {
+  const response = await responseOrPromise;
+  const res = new Response(response.body, response);
+  res.headers.set("X-Permalink-Debug", reason);
+  return res;
+}
+
 export async function onRequest(context) {
   const { request, env, next } = context;
 
@@ -51,15 +60,19 @@ export async function onRequest(context) {
   const url = new URL(request.url);
   const id = url.searchParams.get("id");
   const table = id && tableForPath(url.pathname);
-  if (!table) return next();
+  if (!table) return withDebugHeader(next(), `pass-through:no-id-or-unmatched-path(${url.pathname})`);
 
   let entry;
+  let dbErrorMsg = "";
   try {
     entry = await fetchEntry(env, table, id);
   } catch (e) {
     entry = null;
+    dbErrorMsg = String(e && e.message ? e.message : e);
   }
-  if (!entry) return next();
+  if (!entry) {
+    return withDebugHeader(next(), dbErrorMsg ? `db-error:${dbErrorMsg}` : `entry-not-found:${table}:${id}`);
+  }
 
   // 실제 브라우저가 쓰고 있는 경로(예: /gimpo)를 그대로 다시 요청해야
   // Cloudflare의 확장자 제거 리다이렉트에 걸리지 않고 실제 페이지 내용을 받아온다.
@@ -68,21 +81,25 @@ export async function onRequest(context) {
   try {
     const assetUrl = new URL(url.pathname, url.origin);
     const assetResponse = await env.ASSETS.fetch(new Request(assetUrl, request));
-    if (!assetResponse.ok) return next();
+    if (!assetResponse.ok) {
+      return withDebugHeader(next(), `asset-fetch-failed:${assetResponse.status}`);
+    }
 
     const pageTitle = `${entry.title} | ${SITE_TITLE}`;
     const description = entry.desc && entry.desc.trim()
       ? entry.desc.trim()
       : `${SITE_TITLE}에 등록된 도시 동물 피해 사례입니다.`;
 
-    return new HTMLRewriter()
+    const rewritten = new HTMLRewriter()
       .on('meta[property="og:title"]', new MetaContentRewriter(pageTitle))
       .on('meta[property="og:description"]', new MetaContentRewriter(description))
       .on('meta[property="og:url"]', new MetaContentRewriter(url.toString()))
       .on('meta[name="description"]', new MetaContentRewriter(description))
       .on("title", new TextRewriter(pageTitle))
       .transform(assetResponse);
+
+    return withDebugHeader(rewritten, "rewritten-ok");
   } catch (e) {
-    return next();
+    return withDebugHeader(next(), `rewrite-error:${String(e && e.message ? e.message : e)}`);
   }
 }
