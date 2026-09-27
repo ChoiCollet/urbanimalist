@@ -10,14 +10,10 @@
 
 const SITE_TITLE = "어반애니멀리스트";
 
-function targetForPath(pathname) {
+function tableForPath(pathname) {
   const p = pathname.length > 1 ? pathname.replace(/\/$/, "") : pathname;
-  if (p === "/" || p === "/index" || p === "/index.html") {
-    return { table: "incidents", file: "/index.html" };
-  }
-  if (p === "/gimpo" || p === "/gimpo.html") {
-    return { table: "gimpo_incidents", file: "/gimpo.html" };
-  }
+  if (p === "/" || p === "/index" || p === "/index.html") return "incidents";
+  if (p === "/gimpo" || p === "/gimpo.html") return "gimpo_incidents";
   return null;
 }
 
@@ -54,30 +50,39 @@ export async function onRequest(context) {
 
   const url = new URL(request.url);
   const id = url.searchParams.get("id");
-  const target = id && targetForPath(url.pathname);
-  if (!target) return next();
+  const table = id && tableForPath(url.pathname);
+  if (!table) return next();
 
   let entry;
   try {
-    entry = await fetchEntry(env, target.table, id);
+    entry = await fetchEntry(env, table, id);
   } catch (e) {
     entry = null;
   }
   if (!entry) return next();
 
-  const assetResponse = await env.ASSETS.fetch(new Request(new URL(target.file, url.origin), request));
-  if (!assetResponse.ok) return assetResponse;
+  // 실제 브라우저가 쓰고 있는 경로(예: /gimpo)를 그대로 다시 요청해야
+  // Cloudflare의 확장자 제거 리다이렉트에 걸리지 않고 실제 페이지 내용을 받아온다.
+  // 이 블록에서 무슨 문제가 생기든(응답 실패, 알 수 없는 오류 등) 절대 페이지를
+  // 깨뜨리지 않고 원래 페이지로 안전하게 넘어가도록 전체를 try/catch로 감싼다.
+  try {
+    const assetUrl = new URL(url.pathname, url.origin);
+    const assetResponse = await env.ASSETS.fetch(new Request(assetUrl, request));
+    if (!assetResponse.ok) return next();
 
-  const pageTitle = `${entry.title} | ${SITE_TITLE}`;
-  const description = entry.description && entry.description.trim()
-    ? entry.description.trim()
-    : `${SITE_TITLE}에 등록된 도시 동물 피해 사례입니다.`;
+    const pageTitle = `${entry.title} | ${SITE_TITLE}`;
+    const description = entry.description && entry.description.trim()
+      ? entry.description.trim()
+      : `${SITE_TITLE}에 등록된 도시 동물 피해 사례입니다.`;
 
-  return new HTMLRewriter()
-    .on('meta[property="og:title"]', new MetaContentRewriter(pageTitle))
-    .on('meta[property="og:description"]', new MetaContentRewriter(description))
-    .on('meta[property="og:url"]', new MetaContentRewriter(url.toString()))
-    .on('meta[name="description"]', new MetaContentRewriter(description))
-    .on("title", new TextRewriter(pageTitle))
-    .transform(assetResponse);
+    return new HTMLRewriter()
+      .on('meta[property="og:title"]', new MetaContentRewriter(pageTitle))
+      .on('meta[property="og:description"]', new MetaContentRewriter(description))
+      .on('meta[property="og:url"]', new MetaContentRewriter(url.toString()))
+      .on('meta[name="description"]', new MetaContentRewriter(description))
+      .on("title", new TextRewriter(pageTitle))
+      .transform(assetResponse);
+  } catch (e) {
+    return next();
+  }
 }
