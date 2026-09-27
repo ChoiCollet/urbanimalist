@@ -11,10 +11,11 @@
 const SITE_TITLE = "어반애니멀리스트";
 
 function targetForPath(pathname) {
-  if (pathname === "/" || pathname === "/index.html") {
+  const p = pathname.length > 1 ? pathname.replace(/\/$/, "") : pathname;
+  if (p === "/" || p === "/index" || p === "/index.html") {
     return { table: "incidents", file: "/index.html" };
   }
-  if (pathname === "/gimpo.html") {
+  if (p === "/gimpo" || p === "/gimpo.html") {
     return { table: "gimpo_incidents", file: "/gimpo.html" };
   }
   return null;
