@@ -19,7 +19,7 @@ function tableForPath(pathname) {
 
 async function fetchEntry(env, table, id) {
   const row = await env.DB
-    .prepare(`SELECT title, "desc" AS description FROM ${table} WHERE id = ?`)
+    .prepare(`SELECT * FROM ${table} WHERE id = ?`)
     .bind(id)
     .first();
   return row && row.title ? row : null;
@@ -71,8 +71,8 @@ export async function onRequest(context) {
     if (!assetResponse.ok) return next();
 
     const pageTitle = `${entry.title} | ${SITE_TITLE}`;
-    const description = entry.description && entry.description.trim()
-      ? entry.description.trim()
+    const description = entry.desc && entry.desc.trim()
+      ? entry.desc.trim()
       : `${SITE_TITLE}에 등록된 도시 동물 피해 사례입니다.`;
 
     return new HTMLRewriter()
